@@ -1,0 +1,21 @@
+@import '../../assets/styles/scss/variables/theme';
+
+div.wrapper {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+div.empty__svg {
+  width: 75px;
+  & svg {
+    fill: $gray-light;
+  }
+}
+
+p.empty__text {
+  font-size: 14px;
+}

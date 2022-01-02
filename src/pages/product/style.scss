@@ -1,0 +1,112 @@
+div.step__container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & div.ant-steps {
+    width: 40%;
+  }
+}
+
+div.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+div.editor__style {
+  & div.DraftEditor-editorContainer {
+    height: 200px;
+  }
+
+  margin-bottom: 24px;
+}
+
+div.btn__container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 50px;
+}
+
+div.ant-upload-rtl.ant-upload.ant-upload-select-picture-card {
+  margin: 10px 0 !important;
+}
+
+button.ant-upload-list-item-card-actions-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+div.upload__gallery__form {
+  & div.ant-form-item-control-input-content {
+    display: flex;
+    flex-wrap: wrap;
+
+    & span.upload__gallery {
+      width: fit-content;
+      margin-top: 8px;
+    }
+
+    & div.img__container {
+      margin-left: 8px;
+      margin-top: 8px;
+      position: relative;
+      transition: all ease 0.3s;
+
+      & svg {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 20px;
+        color: #ffffff;
+        cursor: pointer;
+        visibility: hidden;
+      }
+
+      &:hover {
+        & svg {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
+
+.deleteImage {
+  svg {
+    position: absolute;
+    right: 18px;
+    top: 22px;
+    color: #ea2125;
+    cursor: pointer;
+    font-size: 30px;
+  }
+}
+
+.ant-input.ant-input-rtl {
+  border-top-right-radius: 0.625rem !important;
+  border-bottom-right-radius: 0.625rem !important;
+}
+.ant-btn.ant-btn-icon-only.ant-btn-rtl.ant-input-search-button,
+.ant-input-group-addon {
+  border-top-left-radius: 0.625rem !important;
+  border-bottom-left-radius: 0.625rem !important;
+  width: 30px !important;
+  height: 42px !important;
+}
+
+.ant-btn.ant-btn-icon-only.ant-btn-rtl.ant-input-search-button {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding-top: 4px !important;
+}
+.ck-editor__editable_inline {
+  min-height: 200px;
+}

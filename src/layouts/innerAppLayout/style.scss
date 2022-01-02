@@ -1,0 +1,35 @@
+.inner-app-layout {
+  background-color: #ffffff;
+  display: flex;
+  border-radius: 0.625rem;
+
+  > .side-content {
+    display: flex;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14);
+
+    &.with-border {
+      border-right: 1px solid red;
+
+      .ant-menu-inline {
+        border-right-color: transparent;
+      }
+    }
+  }
+
+  > .main-content {
+    min-height: calc(100vh - 130px - 25px * 2 - 2px);
+    width: 100%;
+
+    &.has-page-header {
+      min-height: 75vh;
+    }
+
+    &.gutter {
+      padding: 1.5rem;
+    }
+
+    &.no-gutter {
+      padding: 0;
+    }
+  }
+}

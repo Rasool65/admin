@@ -1,0 +1,91 @@
+button.btn__back {
+  width: 45px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & svg {
+    font-size: 22px;
+  }
+}
+
+.btn__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.card__header {
+  margin-top: -25px;
+  margin-left: -25px;
+  margin-right: -25px;
+  border-radius: 0px;
+  border: none;
+  height: 123px;
+  display: flex;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 16px;
+  & div.ant-card-body {
+    width: 100%;
+  }
+}
+
+.card__boxshadow {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 16px;
+}
+
+div.card__header__wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+div.card__header__btn__container {
+  display: flex;
+  align-items: center;
+  & button.btn__header__cancel {
+    margin-right: 16px;
+  }
+  // & button.btn_addEdit {
+  // box-shadow: 0 0 8px 4px rgba(87, 119, 255, 0.22);
+  // }
+}
+
+div.toolbar__Wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 24px;
+
+  & button.btn_create {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+    // box-shadow: 0 0 8px 4px rgba(87, 119, 255, 0.22);
+  }
+  & svg {
+    font-size: 20px;
+  }
+}
+
+div.cell__ellipsis__container {
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+div.ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: normal;
+}
+
+.messages {
+  max-height: 195px;
+  overflow-y: auto;
+}

@@ -1,0 +1,33 @@
+div.login__wrapper {
+  // background-image: url('../../assets/img/registerBack.jpg');
+  // background-position: center center;
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  height: 100vh;
+}
+
+p.forget__pass {
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  padding-top: 24px;
+}
+
+div.btnforget__form div.ant-form-item-control-input-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  & span {
+    cursor: pointer;
+  }
+}
+
+.ant-form-item-has-error :not(.ant-input-disabled).ant-input:focus,
+.ant-form-item-has-error
+  :not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper:focus,
+.ant-form-item-has-error :not(.ant-input-disabled).ant-input-focused,
+.ant-form-item-has-error
+  :not(.ant-input-affix-wrapper-disabled).ant-input-affix-wrapper-focused {
+  box-shadow: none !important;
+}

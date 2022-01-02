@@ -1,0 +1,37 @@
+@import '../../assets//styles/scss/variables/theme';
+
+div.profile__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  padding: 8px 16px;
+  span.header__avatar {
+    width: 50px;
+    height: 40px;
+    cursor: pointer;
+  }
+}
+
+div.info {
+  width: 100%;
+  padding-right: 16px;
+  display: flex;
+  flex-direction: column;
+
+  & p.profile__name {
+    font-size: 16px;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  & p.profile__expert {
+    color: $gray_7;
+    font-size: 16px;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

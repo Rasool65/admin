@@ -1,0 +1,84 @@
+div.breadcrumbs__wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 18px;
+
+  & h3 {
+    margin-left: 16px;
+  }
+}
+
+div.content__wrapper {
+  width: 100%;
+  padding-right: 105px;
+  padding-top: 25px;
+  padding-left: 25px;
+  padding-bottom: 25px;
+  margin-top: 70px;
+}
+div.content__collapsed {
+  padding-right: 275px;
+}
+
+@media screen and (min-width: 321px) and (max-width: 959px) {
+  div.content__wrapper {
+    padding-right: 66px !important;
+  }
+  div.content__collapsed {
+    padding-right: 0 !important;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  div.content__wrapper {
+    padding-right: 0;
+  }
+  div.content__collapsed {
+    padding-right: 0;
+  }
+}
+
+div.breadcrumbs {
+  & span:nth-child(1) {
+    cursor: pointer;
+  }
+  & span:nth-child(2) {
+    cursor: pointer;
+  }
+  & span:nth-child(3) {
+    cursor: none;
+    & span {
+      cursor: auto;
+    }
+  }
+}
+
+aside.nav__sider {
+  height: calc(100vh - 70px);
+  z-index: 12;
+  position: fixed;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.15);
+  margin-top: 70px;
+  background-color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.09em;
+  }
+}
+
+.sidebar__icon svg {
+  font-size: 22px;
+}
+
+.ant-menu > li:hover {
+  color: #ea2125 !important;
+  > div > span {
+    color: #ea2125 !important;
+  }
+}
+
+.ant-message {
+  z-index: 13791379 !important;
+}

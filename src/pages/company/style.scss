@@ -1,0 +1,29 @@
+.deleteImage {
+  svg {
+    position: absolute;
+    right: 18px;
+    top: 22px;
+    color: #ea2125;
+    cursor: pointer;
+    font-size: 30px;
+  }
+}
+
+.ant-input.ant-input-rtl {
+  border-top-right-radius: 0.625rem !important;
+  border-bottom-right-radius: 0.625rem !important;
+}
+.ant-btn.ant-btn-icon-only.ant-btn-rtl.ant-input-search-button,
+.ant-input-group-addon {
+  border-top-left-radius: 0.625rem !important;
+  border-bottom-left-radius: 0.625rem !important;
+  width: 30px !important;
+  height: 42px !important;
+}
+
+.ant-btn.ant-btn-icon-only.ant-btn-rtl.ant-input-search-button {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding-top: 4px !important;
+}
