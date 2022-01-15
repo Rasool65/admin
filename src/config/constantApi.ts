@@ -40,6 +40,7 @@ export const SLIDE_SHOW_CRUD = '/admin/SlideShows';
 export const SETTING_API = '/setting';
 export const TERM_SETTING = '/setting/term';
 export const PRIVACY_SETTING = '/setting/privacy';
+export const BANNERS_SETTING = '/setting/bannerspath';
 
 // contactus
 export const CONTACTUS_API = '/admin/contactus';

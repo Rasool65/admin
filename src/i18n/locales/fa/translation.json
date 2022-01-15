@@ -513,5 +513,14 @@
   "editCustomer": "ویرایش مشتری",
   "baseOrderAmount": "مبلغ حداقل سفارش",
   "editSuccessBaseAmount": "مبلغ حداقل سفارش با موفقیت بروزرسانی شد",
-  "pleaseInsertBaseOrderAmount": "وارد کردن مبلغ حداقل سفارش الزامیست"
+  "pleaseInsertBaseOrderAmount": "وارد کردن مبلغ حداقل سفارش الزامیست",
+  "invalidBrandLink":"لطفأ لینک را بدرستی وارد نمایید",
+  "brandLink":"لینک برند",
+  "bannerSetting":"تنظیمات بنر ها",
+  "loginPageBanner":"بنر صفحه ورود",
+  "mainPageBanner":"بنر صفحه اصلی",
+  "aboutUsPageBanner":"بنر صفحه درباره ما",
+  "mainPageSuccessBanner":"تغییر تصویر صفحه اصلی با موفقیت انجام شد",
+  "loginPageSuccessBanner":"تغییر تصویر صفحه ورود با موفقیت انجام شد",
+  "aboutUsPageSuccessBanner":"تغییر تصویر صفحه درباره ما با موفقیت انجام شد"
 }

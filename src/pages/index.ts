@@ -29,6 +29,7 @@ export { default as ProfileWidget } from './profile/Profile';
 
 export { default as PrivaciesSetting } from './setting/PrivaciesSetting';
 export { default as TermsSetting } from './setting/TermsSetting';
+export { default as BannerSetting } from './setting/BannerSetting';
 
 export { default as SubscriberWidget } from './subscriber/Subscriber';
 

@@ -59,6 +59,7 @@ const CompanyAddEdit = () => {
             description: resp.data.description,
             logo: resp.data.logo,
             slug: resp.data.slug,
+            brandLink: resp.data.brandLink,
           });
 
           setImage(resp.data.logo);
@@ -142,6 +143,7 @@ const CompanyAddEdit = () => {
           description: values.description,
           slug: values.slug,
           logo: uploadedImg ? uploadedImg : null,
+          brandLink: values.brandLink,
         };
 
         if (!id) {
@@ -313,6 +315,20 @@ const CompanyAddEdit = () => {
                     </Form.Item>
                   </Col>
 
+                  <Col xs={24} sm={24} md={12}>
+                    <Form.Item
+                      label={t('brandLink')}
+                      name='brandLink'
+                      rules={[
+                        {
+                          type: 'url',
+                          message: t('invalidBrandLink'),
+                        },
+                      ]}
+                    >
+                      <Input autoComplete={'off'} />
+                    </Form.Item>
+                  </Col>
                   <Col xs={24} sm={24} md={12}>
                     <Form.Item
                       label={t('description')}

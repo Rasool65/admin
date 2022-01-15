@@ -32,6 +32,7 @@ import {
   TermsSetting,
   PrivaciesSetting,
   CustomerDetailWidget,
+  BannerSetting,
 } from '../pages/index';
 import {
   LOGIN,
@@ -67,6 +68,7 @@ import {
 } from 'config/constantUrl';
 
 import PrivateRoute from './PrivateRoutes';
+import { BANNER_URL } from './../config/constantUrl';
 
 export const MainRoutes = () => {
   return (
@@ -168,6 +170,13 @@ export const MainRoutes = () => {
         />
 
         {/* Setting */}
+
+        <PrivateRoute
+          exact={true}
+          path={BANNER_URL}
+          component={BannerSetting}
+        />
+
         <PrivateRoute
           exact={true}
           path={SETTING_URL}

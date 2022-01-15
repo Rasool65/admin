@@ -39,11 +39,11 @@ import {
   CONSULT_URL,
   PRIVACY_URL,
   TERM_URL,
+  BANNER_URL,
 } from 'config/constantUrl';
 import RemoSysMenu from '../../uiKits/menu/RemoSysMenu';
 import '../style.scss';
 import { IMenus } from 'layouts/widget-type';
-import { USERS_CRUD } from 'config/constantApi';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
@@ -160,6 +160,13 @@ const Sidebar = () => {
           title: t('setting'),
           show: userProfile.roleName === 'Admin',
           children: [
+            {
+              key: BANNER_URL,
+              icon: '',
+              title: t('bannerSetting'),
+              show: userProfile.roleName === 'Admin',
+              children: [],
+            },
             {
               key: SETTING_URL,
               icon: '',

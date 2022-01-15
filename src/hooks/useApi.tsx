@@ -25,7 +25,6 @@ export const useApi = (isLoc?: boolean) => {
   };
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
-    debugger;
   }
 
   instance = axios.create({
