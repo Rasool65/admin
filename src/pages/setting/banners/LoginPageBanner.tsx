@@ -17,8 +17,8 @@ function LoginPageBanner({ url }) {
   const { uploadFile, uploadValue } = useUploadFileApi();
 
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
-  const [uploadedLoginPageImg, setLoginPageImage] = useState<string>('');
-  const [loginLoading, setLoginLoading] = useState<boolean>(false);
+  const [uploadedImg, setImage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const beforeUpload = (file: any) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -53,53 +53,50 @@ function LoginPageBanner({ url }) {
     },
   };
 
-  const handleUploadLoginPageChange = async (info) => {
+  const handleChange = async (info) => {
     setUploadLoading(true);
 
     if (!!info.file) {
       const result = await ImageHelper.getBase64(info.file.originFileObj);
 
       if (!!result) {
-        setLoginPageImage(result as string);
+        setImage(result as string);
         setUploadLoading(false);
       }
     }
   };
 
-  const handleLoginPageSubmit = () => {
+  const handleSubmit = () => {
     const body = {
-      bannerType: 2, // loginPageBanner
+      bannerType: 2,
       src: !!uploadValue ? uploadValue.url : url,
     };
-    setLoginLoading(true);
+    setLoading(true);
     updateRequest(BANNERS_SETTING, body)
       .then(() => {
-        setLoginLoading(false);
+        setLoading(false);
         message.success(t('loginPageSuccessBanner'));
       })
       .catch(() => {
-        setLoginLoading(false);
+        setLoading(false);
       });
   };
 
   return (
     <>
-      <Spin spinning={loginLoading}>
+      <Spin spinning={loading}>
         <h3>{t('loginPageBanner')}</h3>
         <br />
         <Dragger
           style={{ width: '100%' }}
           {...imageUploadProps}
           beforeUpload={beforeUpload}
-          onChange={handleUploadLoginPageChange}
+          onChange={handleChange}
         >
-          {uploadedLoginPageImg || url ? (
+          {uploadedImg || url ? (
             <img
-              src={
-                uploadedLoginPageImg
-                  ? uploadedLoginPageImg
-                  : `${BASE_URL}${url}`
-              }
+              style={{ height: '500px' }}
+              src={uploadedImg ? uploadedImg : `${BASE_URL}${url}`}
               alt='avatar'
               className='img-fluid'
             />
@@ -126,13 +123,13 @@ function LoginPageBanner({ url }) {
               type='primary'
               style={{ width: '105px', minWidth: '95px' }}
               onClick={
-                loginLoading
+                loading
                   ? () => {
                       return;
                     }
-                  : handleLoginPageSubmit
+                  : handleSubmit
               }
-              loading={loginLoading}
+              loading={loading}
             >
               {t('Update')}
             </Button>

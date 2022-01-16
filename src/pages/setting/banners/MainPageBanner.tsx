@@ -17,9 +17,9 @@ function MainPageBanner({ url }) {
   const { uploadFile, uploadValue } = useUploadFileApi();
 
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
-  const [uploadedMainPageImg, setMainPageImage] = useState<string>('');
+  const [uploadedImg, setImage] = useState<string>('');
 
-  const [mainLoading, setMainLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const beforeUpload = (file: any) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -53,51 +53,50 @@ function MainPageBanner({ url }) {
       uploadFile(formData);
     },
   };
-  const handleUploadMainPageChange = async (info) => {
+  const handleChange = async (info) => {
     setUploadLoading(true);
 
     if (!!info.file) {
       const result = await ImageHelper.getBase64(info.file.originFileObj);
 
       if (!!result) {
-        setMainPageImage(result as string);
+        setImage(result as string);
         setUploadLoading(false);
       }
     }
   };
 
-  const handleMainPageSubmit = () => {
+  const handleSubmit = () => {
     const body = {
-      bannerType: 0, // mainPageBanner
+      bannerType: 0,
       src: !!uploadValue ? uploadValue.url : url,
     };
-    setMainLoading(true);
+    setLoading(true);
     updateRequest(BANNERS_SETTING, body)
       .then(() => {
-        setMainLoading(false);
+        setLoading(false);
         message.success(t('mainPageSuccessBanner'));
       })
       .catch(() => {
-        setMainLoading(false);
+        setLoading(false);
       });
   };
 
   return (
     <>
-      <Spin spinning={mainLoading}>
+      <Spin spinning={loading}>
         <h3>{t('mainPageBanner')}</h3>
         <br />
         <Dragger
           style={{ width: '100%' }}
           {...imageUploadProps}
           beforeUpload={beforeUpload}
-          onChange={handleUploadMainPageChange}
+          onChange={handleChange}
         >
-          {uploadedMainPageImg || url ? (
+          {uploadedImg || url ? (
             <img
-              src={
-                uploadedMainPageImg ? uploadedMainPageImg : `${BASE_URL}${url}`
-              }
+              style={{ maxHeight: '155px' }}
+              src={uploadedImg ? uploadedImg : `${BASE_URL}${url}`}
               alt='avatar'
               className='img-fluid'
             />
@@ -124,13 +123,13 @@ function MainPageBanner({ url }) {
               type='primary'
               style={{ width: '105px', minWidth: '95px' }}
               onClick={
-                mainLoading
+                loading
                   ? () => {
                       return;
                     }
-                  : handleMainPageSubmit
+                  : handleSubmit
               }
-              loading={mainLoading}
+              loading={loading}
             >
               {t('Update')}
             </Button>

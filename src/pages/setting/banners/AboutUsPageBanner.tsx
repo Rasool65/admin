@@ -16,8 +16,8 @@ function AboutUsPageBanner({ url }) {
   const { updateRequest } = useHttpRequest();
   const { uploadFile, uploadValue } = useUploadFileApi();
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
-  const [uploadedAboutUsPageImg, setAboutUsPageImage] = useState<string>('');
-  const [aboutUsLoading, setAboutUsLoading] = useState<boolean>(false);
+  const [uploadedImg, setImage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const beforeUpload = (file: any) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -51,53 +51,50 @@ function AboutUsPageBanner({ url }) {
       uploadFile(formData);
     },
   };
-  const handleUploadAboutUsPageChange = async (info) => {
+  const handleUploadChange = async (info) => {
     setUploadLoading(true);
 
     if (!!info.file) {
       const result = await ImageHelper.getBase64(info.file.originFileObj);
 
       if (!!result) {
-        setAboutUsPageImage(result as string);
+        setImage(result as string);
         setUploadLoading(false);
       }
     }
   };
 
-  const handleAboutUsPageSubmit = () => {
+  const handleSubmit = () => {
     const body = {
-      bannerType: 1, // AboutUsPageBanner
+      bannerType: 1,
       src: !!uploadValue ? uploadValue.url : url,
     };
-    setAboutUsLoading(true);
+    setLoading(true);
     updateRequest(BANNERS_SETTING, body)
       .then(() => {
-        setAboutUsLoading(false);
+        setLoading(false);
         message.success(t('aboutUsPageSuccessBanner'));
       })
       .catch(() => {
-        setAboutUsLoading(false);
+        setLoading(false);
       });
   };
 
   return (
     <>
-      <Spin spinning={aboutUsLoading}>
+      <Spin spinning={loading}>
         <h3>{t('aboutUsPageBanner')}</h3>
         <br />
         <Dragger
           style={{ width: '100%' }}
           {...imageUploadProps}
           beforeUpload={beforeUpload}
-          onChange={handleUploadAboutUsPageChange}
+          onChange={handleUploadChange}
         >
-          {uploadedAboutUsPageImg || url ? (
+          {uploadedImg || url ? (
             <img
-              src={
-                uploadedAboutUsPageImg
-                  ? uploadedAboutUsPageImg
-                  : `${BASE_URL}${url}`
-              }
+              style={{ maxHeight: '155px' }}
+              src={uploadedImg ? uploadedImg : `${BASE_URL}${url}`}
               alt='avatar'
               className='img-fluid'
             />
@@ -124,13 +121,13 @@ function AboutUsPageBanner({ url }) {
               type='primary'
               style={{ width: '105px', minWidth: '95px' }}
               onClick={
-                aboutUsLoading
+                loading
                   ? () => {
                       return;
                     }
-                  : handleAboutUsPageSubmit
+                  : handleSubmit
               }
-              loading={aboutUsLoading}
+              loading={loading}
             >
               {t('Update')}
             </Button>

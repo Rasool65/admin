@@ -11,6 +11,11 @@ import {
   Select,
   Upload,
 } from 'antd';
+import {
+  OptionData,
+  OptionGroupData,
+  OptionsType,
+} from 'rc-select/lib/interface';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MdArrowBack } from 'react-icons/md';
@@ -20,27 +25,33 @@ import { COMPANY_URL } from 'config/constantUrl';
 import { COMPANY_API, UPLOAD_FILE } from 'config/constantApi';
 import { MdDelete } from 'react-icons/md';
 import useHttpRequest from 'hooks/useHttpRequest';
-import useUploadFileApi from 'hooks/useUploadFileApi';
-import useQuery from 'hooks/useQuery';
-import { ICompanyModel } from './widget-type';
 import { BASE_URL } from 'config/urls';
 import CustomIcon from 'uiKits/customIcon/Main';
 import UploadIcon from 'assets/img/UploadIcon';
 
 import './style.scss';
 
+const { Option } = Select;
 const { Dragger } = Upload;
 
 const CompanyAddEdit = () => {
   // tslint:disable
   const history = useHistory();
+
   const { t } = useTranslation();
 
+  const urlTargets = [
+    { name: t('urlTargetNone'), value: 'none' },
+    { name: t('urlTargetBlank'), value: '_blank' },
+    { name: t('urlTargetSelf'), value: '_self' },
+  ];
   const { getRequest, postRequest, updateRequest } = useHttpRequest();
   const { id } = useParams();
   const [form] = Form.useForm();
   const location = useLocation();
   const [loadingById, setLoadingById] = useState<boolean>(false);
+
+  const [urlEnable, setUrlEnable] = useState<boolean>(false);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingPage, setLoadingPage] = useState<boolean>(false);
@@ -54,14 +65,18 @@ const CompanyAddEdit = () => {
 
       getRequest(`${COMPANY_API}/${id}`)
         .then((resp) => {
+          debugger;
           form.setFieldsValue({
             name: resp.data.name,
             description: resp.data.description,
             logo: resp.data.logo,
             slug: resp.data.slug,
             brandLink: resp.data.brandLink,
+            urlTarget: urlTargets[resp.data.urlTarget].name,
           });
 
+          if (urlTargets[resp.data.urlTarget].value !== urlTargets[0].value)
+            setUrlEnable(true);
           setImage(resp.data.logo);
 
           setLoadingById(false);
@@ -83,7 +98,17 @@ const CompanyAddEdit = () => {
     }
     return isJpgOrPng && isLt2M;
   };
-
+  const handleUrlTargetChange = (
+    value: string,
+    option: OptionsType | OptionData | OptionGroupData
+  ) => {
+    if (value === urlTargets[0].value) {
+      form.setFieldsValue({
+        brandLink: '',
+      });
+      setUrlEnable(false);
+    } else setUrlEnable(true);
+  };
   const imageUploadProps: {
     name: string;
     multiple: boolean;
@@ -144,6 +169,7 @@ const CompanyAddEdit = () => {
           slug: values.slug,
           logo: uploadedImg ? uploadedImg : null,
           brandLink: values.brandLink,
+          urlTarget: values.urlTarget,
         };
 
         if (!id) {
@@ -316,6 +342,26 @@ const CompanyAddEdit = () => {
                   </Col>
 
                   <Col xs={24} sm={24} md={12}>
+                    <Form.Item label={t('urlTarget')} name='urlTarget'>
+                      <Select
+                        onChange={(value, event) =>
+                          handleUrlTargetChange(value, event)
+                        }
+                        defaultValue={urlTargets[0].name}
+                        placeholder={t('urlTarget')}
+                        loading={false}
+                      >
+                        {urlTargets.map(
+                          (_elm: { name: string; value: string }) => (
+                            <Option key={_elm.name} value={_elm.value}>
+                              {_elm.name}
+                            </Option>
+                          )
+                        )}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={24} md={12}>
                     <Form.Item
                       label={t('brandLink')}
                       name='brandLink'
@@ -326,7 +372,7 @@ const CompanyAddEdit = () => {
                         },
                       ]}
                     >
-                      <Input autoComplete={'off'} />
+                      <Input disabled={!urlEnable} autoComplete={'off'} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} sm={24} md={12}>

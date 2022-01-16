@@ -28,12 +28,10 @@ function BannerSetting() {
       <Row gutter={24}>
         <Col xs={24} sm={24} md={12} lg={12}>
           <MainPageBanner url={mainBannerUrl} />
+          <AboutUsPageBanner url={aboutUsBannerUrl} />
         </Col>
         <Col xs={24} sm={24} md={12} lg={12}>
           <LoginPageBanner url={loginBannerUrl} />
-        </Col>
-        <Col xs={24} sm={24} md={12} lg={12}>
-          <AboutUsPageBanner url={aboutUsBannerUrl} />
         </Col>
       </Row>
     </>

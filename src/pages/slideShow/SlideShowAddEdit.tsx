@@ -10,7 +10,6 @@ import {
   Row,
   Col,
   Upload,
-  Switch,
 } from 'antd';
 import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import { useHistory, useParams } from 'react-router-dom';
