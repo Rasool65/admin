@@ -72,11 +72,12 @@ const CompanyAddEdit = () => {
             logo: resp.data.logo,
             slug: resp.data.slug,
             brandLink: resp.data.brandLink,
-            urlTarget: urlTargets[resp.data.urlTarget].name,
+            urlTarget: resp.data.urlTarget,
           });
 
-          if (urlTargets[resp.data.urlTarget].value !== urlTargets[0].value)
-            setUrlEnable(true);
+          if (resp.data.urlTarget !== urlTargets[0].value) setUrlEnable(true);
+
+          setUrlEnable(true);
           setImage(resp.data.logo);
 
           setLoadingById(false);
@@ -347,7 +348,7 @@ const CompanyAddEdit = () => {
                         onChange={(value, event) =>
                           handleUrlTargetChange(value, event)
                         }
-                        defaultValue={urlTargets[0].name}
+                        defaultValue={urlTargets[0].value}
                         placeholder={t('urlTarget')}
                         loading={false}
                       >

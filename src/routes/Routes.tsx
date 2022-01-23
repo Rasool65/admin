@@ -33,6 +33,7 @@ import {
   PrivaciesSetting,
   CustomerDetailWidget,
   BannerSetting,
+  CreateOrdersWidget,
 } from '../pages/index';
 import {
   LOGIN,
@@ -65,6 +66,7 @@ import {
   TERM_URL,
   PRIVACY_URL,
   CUSTOMER_DETAIL_URL,
+  CREATE_ORDER_URL,
 } from 'config/constantUrl';
 
 import PrivateRoute from './PrivateRoutes';
@@ -122,6 +124,11 @@ export const MainRoutes = () => {
           exact={true}
           path={CUSTOMERS_LIST}
           component={CustomersWidget}
+        />
+        <PrivateRoute
+          exact={true}
+          path={CREATE_ORDER_URL}
+          component={CreateOrdersWidget}
         />
         <PrivateRoute
           exact={true}

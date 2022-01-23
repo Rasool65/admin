@@ -54,6 +54,10 @@ export const PRODUCT_CATEGORY_LIST_API = '/admin/productcategory/list';
 
 // product
 export const PRODUCT_API = '/admin/product';
+export const PRODUCTS_CRUD = '/admin/product/getforcustomer';
+
+//cart
+export const CART_API = '/admin/cart';
 
 // order
 export const ORDER_API = '/admin/orders';

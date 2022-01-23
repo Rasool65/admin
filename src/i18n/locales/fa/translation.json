@@ -522,5 +522,9 @@
   "aboutUsPageBanner":"بنر صفحه درباره ما",
   "mainPageSuccessBanner":"تغییر تصویر صفحه اصلی با موفقیت انجام شد",
   "loginPageSuccessBanner":"تغییر تصویر صفحه ورود با موفقیت انجام شد",
-  "aboutUsPageSuccessBanner":"تغییر تصویر صفحه درباره ما با موفقیت انجام شد"
+  "aboutUsPageSuccessBanner":"تغییر تصویر صفحه درباره ما با موفقیت انجام شد",
+  "createOrder":"ایجاد سفارش",
+  "record":"ردیف",
+  "addOrder":"افزودن"
+
 }

@@ -16,6 +16,7 @@ export const CONSULT_URL = '/admin/customersconsult';
 export const CUSTOMERS_LIST = '/admin/customers';
 export const PRE_REGISTRATION_CUSTOMERS = '/admin/pre-registration-customer';
 export const CUSTOMER_DETAIL_URL = '/admin/customer/edit';
+export const CREATE_ORDER_URL = '/admin/Create-orders';
 
 // Messages
 export const MESSAGES = '/admin/message';
@@ -56,6 +57,7 @@ export const PRODUCT_EDIT_URL = '/admin/product/edit';
 
 // Order
 export const ORDER_URL = '/admin/order';
+export const CUSTOMER_ORDER_URL = '/admin/customerOrder';
 export const ORDER_DETAIL_URL = '/admin/order/detail';
 
 // Profile

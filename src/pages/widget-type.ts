@@ -9,6 +9,15 @@ export type IResponse<T> = {
     totalResults?: number;
   };
 };
+export type IResponseOrder<T> = {
+  items?: T[];
+  // meta?: {
+  //   name?: string;
+  //   number?: number;
+  //   code?: number;
+  //   totalResults?: number;
+  // };
+};
 export interface ITable<T> {
   response?: IResponse<T> | any;
   onDelete?: (id?: number) => (event: React.MouseEvent) => void;

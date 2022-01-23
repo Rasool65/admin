@@ -9,6 +9,8 @@ export { default as CustomersWidget } from './customers/Customers';
 export { default as PreRegistrationCustomerWidget } from './customers/PreRegistrationCustomer';
 export { default as CustomerDetailWidget } from './customers/CustomerDetail';
 
+export { default as CreateOrdersWidget } from './createOrders';
+
 export { default as MessagesWidget } from './messages/Messages';
 export { default as MessagesAddWidget } from './messages/AddMessage';
 

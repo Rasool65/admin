@@ -40,6 +40,7 @@ import {
   PRIVACY_URL,
   TERM_URL,
   BANNER_URL,
+  CREATE_ORDER_URL,
 } from 'config/constantUrl';
 import RemoSysMenu from '../../uiKits/menu/RemoSysMenu';
 import '../style.scss';
@@ -125,6 +126,13 @@ const Sidebar = () => {
           key: ORDER_URL,
           icon: FileDoneOutlined,
           title: t('orderManagment'),
+          show: userProfile.roleName === 'Admin',
+          children: [],
+        },
+        {
+          key: CREATE_ORDER_URL,
+          icon: FileDoneOutlined,
+          title: t('createOrder'),
           show: userProfile.roleName === 'Admin',
           children: [],
         },
