@@ -124,7 +124,7 @@ const ConsultTable: React.FC<ITable<UsersListModel>> = ({
     form
       .validateFields()
       .then((values) => {
-        const body = { consultId: consultId, ...values };
+        const body = { consultId, ...values };
         postRequest(`${CONSULT_API}/addconsulthistory`, body)
           .then((resp) => {
             setOpenHistoryModal(false);

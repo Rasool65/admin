@@ -34,6 +34,7 @@ function CreateOrders() {
   const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
 
   const [selectCustomer, setSelectCustomer] = useState<boolean>(false);
+  const [selectProduct, setSelectProduct] = useState<boolean>(true);
 
   const [customerName, setCustomerName] = useState('');
   const [customers, setCustomers] = useState<any>([]);
@@ -76,22 +77,22 @@ function CreateOrders() {
   // };
 
   const handleSubmit = (event) => {
+    console.log(productNumber);
     //add to table
     event.stopPropagation();
     form
       .validateFields()
       .then((products) => {
+        debugger;
         const body = {
-          ...products,
           code: '321231asdasdas-a-sd',
           name: 'شسی',
           price: 125000,
           number: 250,
         };
-
         setValue(body);
 
-        //setLoading(true);
+        // setLoading(true);
         // postRequest(CART_API, body)
         //   .then(() => {
         //     setLoading(false);
@@ -130,12 +131,12 @@ function CreateOrders() {
     if (!!val && val.length > 2) {
       setLoadingSearch(true);
       getRequest(
-        `${PRODUCTS_CRUD}?search=${
+        `${PRODUCTS_CRUD}?CustomerId=${customerId}&search=${
           !!searchProductValue ? searchProductValue : ''
         }`
       )
         .then((resp) => {
-          setCustomers(resp.data.items);
+          setProducts(resp.data.items);
           setLoadingSearch(false);
         })
         .catch((err) => {
@@ -195,6 +196,7 @@ function CreateOrders() {
                   customers.find((item) => item.id === val.value).fullName
                 );
                 setSelectCustomer(true);
+                setSelectProduct(false);
               }}
               onSearch={handleSearchCustomer}
               notFoundContent={
@@ -230,6 +232,7 @@ function CreateOrders() {
             ]}
           >
             <Select
+              disabled={selectProduct}
               showSearch={true}
               labelInValue={true}
               placeholder={
@@ -269,7 +272,14 @@ function CreateOrders() {
         <Col xs={24} sm={24} md={6} lg={6}>
           <Form.Item />
           <Form.Item label={t('تعداد')}>
-            <InputNumber min={1} defaultValue={1} name='productNumber' />
+            <InputNumber
+              min={1}
+              defaultValue={1}
+              onChange={(e) => {
+                setProductNumber(e);
+              }}
+              name='productNumber'
+            />
           </Form.Item>
         </Col>
         <Form.Item>

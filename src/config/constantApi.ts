@@ -56,7 +56,7 @@ export const PRODUCT_CATEGORY_LIST_API = '/admin/productcategory/list';
 export const PRODUCT_API = '/admin/product';
 export const PRODUCTS_CRUD = '/admin/product/getforcustomer';
 
-//cart
+// cart
 export const CART_API = '/admin/cart';
 
 // order
