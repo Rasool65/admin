@@ -25,6 +25,7 @@ import CustomIcon from 'uiKits/customIcon/Main';
 import UploadIcon from 'assets/img/UploadIcon';
 
 import './style.scss';
+import Text from 'antd/lib/typography/Text';
 
 const { Dragger } = Upload;
 const { Option } = Select;
@@ -265,7 +266,7 @@ const ProductCategoryEdit = () => {
               </Col>
             </Row>
 
-            <Row style={{ paddingTop: '24px' }}>
+            {/* <Row style={{ paddingTop: '24px' }}>
               <Col xs={24} sm={24} md={6} lg={24}>
                 <Form.Item
                   label={t('category')}
@@ -294,7 +295,7 @@ const ProductCategoryEdit = () => {
                   </Select>
                 </Form.Item>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row style={{ paddingTop: '24px' }}>
               <Col xs={24} sm={24} md={6} lg={24}>

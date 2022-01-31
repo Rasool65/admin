@@ -79,6 +79,14 @@ export class DateHelper {
     return date;
   };
 
+  public static isoDateToPersianDateTime = (isoDate: any) => {
+    moment.locale('fa');
+
+    const date = moment(isoDate).format('jYYYY/jMM/jDD HH:mm');
+
+    return date;
+  };
+
   public static splitTime = (date: string) => {
     let modifyTime: string = '';
 

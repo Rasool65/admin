@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Table, Tooltip, Avatar } from 'antd';
-import { useHistory, useLocation } from 'react-router-dom';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Button, Table, Tooltip } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { ColorMode, ITable } from 'pages/widget-type';
+import { ITable } from 'pages/widget-type';
 import { OrderModel } from './widget-type';
-import useQuery from 'hooks/useQuery';
+import EmptyTable from 'uiKits/emptyTable/EmptyTable';
 
 const OrderTable: React.FC<ITable<OrderModel>> = ({
-  response: { items },
+  response: productsList,
+  onDelete,
   loading,
-  onPaginationChange,
+  // onPaginationChange,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const history = useHistory();
-  const location = useLocation();
-  const query = useQuery();
+  // const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation();
 
   const tableColumns = [
-    // {
-    //   title: t('record'),
-    //   dataIndex: 'Id',
-    // },
+    {
+      title: t('record'),
+      dataIndex: 'index',
+      width: 60,
+      render: (text, record, index) => index + 1,
+    },
     {
       title: t('کد محصول'),
-      dataIndex: 'code',
+      dataIndex: 'productId',
+      width: 100,
     },
     {
       title: t('نام محصول'),
@@ -33,15 +33,23 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
     },
     {
       title: t('تعداد'),
-      dataIndex: 'number',
+      dataIndex: 'count',
+      width: 70,
     },
     {
-      title: t('price'),
+      title: t('unitPriceProduct'),
+      dataIndex: 'unitPrice',
+      width: 130,
+    },
+    {
+      title: t('sumPrice'),
       dataIndex: 'price',
+      width: 150,
     },
     {
       title: t('actions'),
       dataIndex: 'actions',
+      width: 100,
       render: (_, record) => (
         <div className='d-flex'>
           <Tooltip title={t('delete')}>
@@ -49,7 +57,7 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
               danger={true}
               className='mr-2 d-flex justify-content-center align-items-center'
               icon={<DeleteOutlined />}
-              // onClick={onDelete!(record.id)}
+              onClick={onDelete!(record.productId)}
               size='small'
             />
           </Tooltip>
@@ -63,49 +71,26 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
   //   onPaginationChange!(page, pageSize ? pageSize : 1);
   // };
 
-  // const changeUrl = (Id) => {
-  //   if (location.search.includes('?')) {
-  //     if (!!query.get('prevPage')) {
-  //       query.set('prevPage', String(currentPage));
-  //       history.push(`${PRODUCT_EDIT_URL}/${Id}?${query.toString()}`);
-  //     } else {
-  //       history.push(
-  //         `${PRODUCT_EDIT_URL}/${Id}${location.search}&prevPage=${currentPage}`
-  //       );
-  //     }
-  //   } else {
-  //     history.push(`${PRODUCT_EDIT_URL}/${Id}?prevPage=${currentPage}`);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (!!query.get('prevPage')) {
-  //     setCurrentPage(Number(query.get('prevPage')));
-  //   }
-  // }, [query.get('prevPage')]);
-
-  // useEffect(() => {
-  //   return;
-  // }, [currentPage]);
-
   return (
     <>
       <Table
+        scroll={{ x: 1024, y: 240 }}
         columns={tableColumns}
-        dataSource={items ? items : []}
+        dataSource={productsList ? productsList : []}
         rowKey='id'
-        // showSorterTooltip={false}
-        // locale={{
-        //   emptyText: <EmptyTable caption={t('EmptyProduct')} />,
-        // }}
-        // loading={loading}
+        showSorterTooltip={false}
+        locale={{
+          emptyText: <EmptyTable caption={t('EmptyProduct')} />,
+        }}
+        loading={loading}
+        pagination={false}
         // pagination={{
-        //   total: totalSize,
+        //   total: productsList.length,
         //   current: !!currentPage ? currentPage : 1,
         //   hideOnSinglePage: false,
         //   showSizeChanger: true,
         //   position: ['bottomLeft'],
-        //   // onChange: handleChange,
+        //   onChange: handleChange,
         // }}
       />
     </>

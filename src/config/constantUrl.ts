@@ -34,6 +34,8 @@ export const COMPANY_ADD_URL = '/admin/company/add';
 export const SETTING_URL = '/admin/setting';
 export const TERM_URL = '/admin/setting/term';
 export const PRIVACY_URL = '/admin/setting/privacy';
+export const CUSTOMER_CLUB_URL = '/admin/setting/club';
+
 export const BANNER_URL = '/admin/setting/banner';
 
 // contactUs

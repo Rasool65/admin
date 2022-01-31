@@ -207,7 +207,7 @@ const MessagesTable: React.FC<ITable<UsersListModel>> = ({
                       <div className={'banck__detail'}>
                         <span> تاریخ ارسال : </span>
                         <span>
-                          {DateHelper.isoDateTopersian(item.sendDate)}
+                          {DateHelper.isoDateToPersianDateTime(item.sendDate)}
                         </span>
                       </div>
                       <Divider />

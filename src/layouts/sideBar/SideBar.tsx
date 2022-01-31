@@ -39,6 +39,7 @@ import {
   CONSULT_URL,
   PRIVACY_URL,
   TERM_URL,
+  CUSTOMER_CLUB_URL,
   BANNER_URL,
   CREATE_ORDER_URL,
 } from 'config/constantUrl';
@@ -192,9 +193,9 @@ const Sidebar = () => {
               children: [],
             },
             {
-              key: PRIVACY_URL,
+              key: CUSTOMER_CLUB_URL,
               icon: '',
-              title: t('privacy'),
+              title: t('customerClub'),
               show:
                 userProfile.roleName === 'Admin' ||
                 userProfile.roleName === 'Supporter',

@@ -7,10 +7,10 @@ import { Button, Card, Col, Form, message, Row } from 'antd';
 import useHttpRequest from 'hooks/useHttpRequest';
 import { PRIVACY_SETTING } from 'config/constantApi';
 
-function PrivaciesSetting() {
+function CustomerClubSetting() {
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const [privacy, setPrivacies] = useState('');
+  const [customerClub, setCustomerClub] = useState('');
   const { updateRequest, getRequest } = useHttpRequest();
   const editorConfiguration = {
     language: 'fa',
@@ -19,10 +19,10 @@ function PrivaciesSetting() {
   const handleSubmit = () => {
     form.validateFields().then(() => {
       const body = {
-        privacy,
+        privacy: customerClub,
       };
       updateRequest(PRIVACY_SETTING, body).then(() => {
-        message.success(t('privacySettingSuccessUpdate'));
+        message.success(t('customerClubSettingSuccessUpdate'));
       });
     });
   };
@@ -30,7 +30,7 @@ function PrivaciesSetting() {
   useEffect(() => {
     getRequest(PRIVACY_SETTING)
       .then((resp) => {
-        setPrivacies(resp.data.privacy);
+        setCustomerClub(resp.data.privacy);
       })
       .catch(() => {
         return;
@@ -52,7 +52,7 @@ function PrivaciesSetting() {
                 {t('Update')}
               </Button>
             </div>
-            <h2> {t('privaciesSetting')}</h2>
+            <h2> {t('customerClubSetting')}</h2>
           </div>
         </Card>
         <Card bordered={false}>
@@ -60,21 +60,21 @@ function PrivaciesSetting() {
             <Col xs={24} sm={24} md={24} lg={24}>
               <Form.Item
                 name='privacies'
-                label={t('privacies')}
+                label={t('customerClub')}
                 rules={[
                   {
                     required: true,
-                    message: t('pleaseInsertPrivacies'),
+                    message: t('pleaseInsertCustomerClubSetting'),
                   },
                 ]}
               >
                 <CKEditor
                   editor={ClassicEditor}
-                  data={privacy ? privacy : ''}
+                  data={customerClub ? customerClub : ''}
                   config={editorConfiguration}
                   onChange={(event, editor) => {
                     const data = editor.getData();
-                    setPrivacies(data);
+                    setCustomerClub(data);
                   }}
                 />
               </Form.Item>
@@ -86,4 +86,4 @@ function PrivaciesSetting() {
   );
 }
 
-export default PrivaciesSetting;
+export default CustomerClubSetting;

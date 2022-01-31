@@ -29,7 +29,7 @@ export { default as CompanyAddEditWidget } from './company/CompanyAddEdit';
 export { default as SettingWidget } from './setting/Setting';
 export { default as ProfileWidget } from './profile/Profile';
 
-export { default as PrivaciesSetting } from './setting/PrivaciesSetting';
+export { default as CustomerClubSetting } from './setting/CustomerClubSetting';
 export { default as TermsSetting } from './setting/TermsSetting';
 export { default as BannerSetting } from './setting/BannerSetting';
 

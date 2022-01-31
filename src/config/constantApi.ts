@@ -61,7 +61,7 @@ export const CART_API = '/admin/cart';
 
 // order
 export const ORDER_API = '/admin/orders';
-
+export const SUBMIT_TO_ORDER_LIST = 'admin/orders/submitorderlist';
 // product brand
 export const BRAND_API = '/admin/company';
 

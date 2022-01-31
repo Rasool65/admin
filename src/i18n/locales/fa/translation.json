@@ -123,6 +123,7 @@
   "privacies": "حریم خصوصی",
   "updateSetting": "به روز رسانی",
   "privacy": "حریم خصوصی",
+  "customerClub": "باشگاه مشتریان",
   "maintenanceMode": "وضعیت تعمیر و نگهداری",
   "merchantId": "کد زرین پال",
   "longitude": "طول جغرافیایی",
@@ -503,7 +504,10 @@
   "pleaseInsertTerms": "لطفا قوانین و مقررات را وارد نمایید",
   "privaciesSetting": "حریم خصوصی",
   "privacySettingSuccessUpdate": "حریم خصوصی با موفقیت بروزرسانی شد",
+  "customerClubSettingSuccessUpdate": "باشگاه مشتریان با موفقیت بروزرسانی شد",
   "pleaseInsertPrivacies": "لطفا حریم خصوصی را وارد نمایید",
+  "pleaseInsertCustomerClubSetting": "لطفا اطلاعات باشگاه مشتریان را وارد نمایید",
+  "customerClubSetting": "باشگاه مشتریان",
   "url": "لینک ارجاع",
   "urlMustBeValid": "آدرس ارجاع نامعتبر است",
   "urlTarget": "نوع لینک",
@@ -514,6 +518,7 @@
   "baseOrderAmount": "مبلغ حداقل سفارش",
   "editSuccessBaseAmount": "مبلغ حداقل سفارش با موفقیت بروزرسانی شد",
   "pleaseInsertBaseOrderAmount": "وارد کردن مبلغ حداقل سفارش الزامیست",
+  "defaultBaseOrderAmount": "حداقل مبلغ پیشفرض سفارش",
   "invalidBrandLink":"لطفأ لینک را بدرستی وارد نمایید",
   "brandLink":"لینک برند",
   "bannerSetting":"تنظیمات بنر ها",
@@ -524,7 +529,13 @@
   "loginPageSuccessBanner":"تغییر تصویر صفحه ورود با موفقیت انجام شد",
   "aboutUsPageSuccessBanner":"تغییر تصویر صفحه درباره ما با موفقیت انجام شد",
   "createOrder":"ایجاد سفارش",
-  "record":"ردیف",
-  "addOrder":"افزودن"
-
+  "cartIsEmpety": "سبد خرید خالی میباشد",
+  "sumPrice": "جمع مبلغ",
+  "sumTotalPrice": "مبلغ کل سفارش",
+  "sumCount": "تعداد اقلام سفارش",
+  "pleaseInsertProductName":"لطفأ محصول مورد نظر را وارد نمایید",
+  "orderSuccessCreated":"ایجاد سفارش با موفقیت انجام شد",
+  "unitPriceProduct": "قیمت واحد (ريال)",
+  "orderCancellation":"سفارش لفو شد",
+  "record":"ردیف"
 }

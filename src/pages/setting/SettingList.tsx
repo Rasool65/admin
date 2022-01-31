@@ -12,6 +12,7 @@ import {
   Modal,
   Popover,
   Spin,
+  InputNumber,
 } from 'antd';
 import {
   FaInstagram,
@@ -34,6 +35,7 @@ import UploadIcon from 'assets/img/UploadIcon';
 import useHttpRequest from 'hooks/useHttpRequest';
 import CustomIcon from 'uiKits/customIcon/Main';
 import { IAvatar, SocialEnum } from './widget-type';
+import { UtilsHelper } from 'utils/UtilsHelper';
 
 const { Dragger } = Upload;
 const { Option } = Select;
@@ -509,7 +511,20 @@ const SettingList = () => {
                 <Input autoComplete={'off'} />
               </Form.Item>
             </Col>
-
+            <Col xs={24} sm={24} md={6} lg={6}>
+              <Form.Item
+                label={t('defaultBaseOrderAmount')}
+                name='defaultBaseOrderAmount'
+              >
+                <InputNumber
+                  style={{
+                    width: '100%',
+                  }}
+                  controls={true}
+                  formatter={(value) => UtilsHelper.threeDigitSeparator(value)}
+                />
+              </Form.Item>
+            </Col>
             <Col xs={24} sm={24} md={6} lg={6}>
               <Form.Item
                 label={t('maintenanceMode')}

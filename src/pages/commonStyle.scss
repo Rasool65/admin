@@ -89,3 +89,20 @@ div.ellipsis {
   max-height: 195px;
   overflow-y: auto;
 }
+
+div.static-page {
+  background-color: white;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  width: 100%;
+}
+
+.text-center {
+  text-align: center !important;
+}
+.mt-15 {
+  margin-top: 15px;
+}

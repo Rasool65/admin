@@ -3,10 +3,8 @@
 @import './scss/global';
 @import './scss/utilities/utilities';
 
-
 * {
   font-family: IRANSans !important;
-
 }
 body {
   direction: rtl;
@@ -17,74 +15,152 @@ body {
   margin: 0px !important;
 }
 
-
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
 button,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video, input {
-	margin: 0;
-	padding: 0;
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video,
+input {
+  margin: 0;
+  padding: 0;
   border: 0;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
 }
 
 *::-webkit-scrollbar {
   width: 0.6em;
 }
 *::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.00);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
   border-radius: 10px;
 }
 *::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,.1);
+  background-color: rgba(0, 0, 0, 0.1);
   /* // outline: '1px solid slategrey', */
   border-radius: 10px;
 }
 
-div.search_dropDown{
+div.search_dropDown {
   top: 60px !important;
   left: 908px !important;
 }
-span.header__badge{
+span.header__badge {
   line-height: 0;
 }
 
 span.ant-table-column-sorter-up {
   & svg {
-
     font-size: 11px;
   }
 }
 span.ant-table-column-sorter-down {
   & svg {
-
     font-size: 11px;
   }
 }
@@ -102,7 +178,7 @@ button.ant-btn {
 .btn-outline-primary {
   border-color: $blue;
 
-  & svg  {
+  & svg {
     color: $blue;
   }
 
@@ -119,7 +195,7 @@ button.ant-btn {
     color: $blue;
   }
 }
-div.spin__loading{ 
+div.spin__loading {
   height: calc(100vh - 70px) !important;
   max-height: calc(100vh - 70px) !important;
   width: 100%;
@@ -129,17 +205,30 @@ div.spin__loading{
   justify-content: center;
 }
 
-.w-25{width:25% !important}
-.w-50{width:50% !important}
-.w-65{width:65% !important}
-.w-75{width:75% !important}
-.w-85{width:85% !important}
-.w-100{width:100% !important}
-.w-auto{width:auto !important}
-
+.w-25 {
+  width: 25% !important;
+}
+.w-50 {
+  width: 50% !important;
+}
+.w-65 {
+  width: 65% !important;
+}
+.w-75 {
+  width: 75% !important;
+}
+.w-85 {
+  width: 85% !important;
+}
+.w-100 {
+  width: 100% !important;
+}
+.w-auto {
+  width: auto !important;
+}
 
 .text-primary {
-  color: #5D6759;
+  color: #5d6759;
 }
 
 .btn__shadow {
@@ -176,13 +265,16 @@ text.highcharts-credits {
   display: none;
 }
 
-
-.calendarContainer .selected button, .calendarContainer .selected button:active, .calendarContainer .selected button:focus, .calendarContainer .selected button:hover :not([disabled]) {
-  background-color: #5D6759 !important;
-  border: #5D6759 !important;
+.calendarContainer .selected button,
+.calendarContainer .selected button:active,
+.calendarContainer .selected button:focus,
+.calendarContainer .selected button:hover :not([disabled]) {
+  background-color: #5d6759 !important;
+  border: #5d6759 !important;
 }
 
-.calendarContainer .heading .next, .calendarContainer .heading .prev {
+.calendarContainer .heading .next,
+.calendarContainer .heading .prev {
   outline: none;
 }
 
@@ -191,21 +283,30 @@ text.highcharts-credits {
 }
 
 .calendarContainer .dayWrapper:not(.selected) button:hover {
-  background-color: #EDEEEC !important;
+  background-color: #edeeec !important;
 }
 
 .today button {
-  border: 3px solid #5D6759 !important;
+  border: 3px solid #5d6759 !important;
 }
 button.calendarButton {
-  background-color: #5D6759;
+  background-color: #5d6759;
 }
 button.calendarButton:hover {
-  background-color: #81897E !important;
+  background-color: #81897e !important;
 }
 
 .public-DraftStyleDefault-ltr {
   direction: rtl;
   text-align: right;
-
+}
+.ck ol,
+.ck ul {
+  padding-inline-start: 40px;
+}
+.ck ol {
+  list-style: decimal;
+}
+.ck ul {
+  list-style: disc;
 }

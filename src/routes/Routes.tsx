@@ -30,7 +30,6 @@ import {
   MessagesWidget,
   ConsultWidget,
   TermsSetting,
-  PrivaciesSetting,
   CustomerDetailWidget,
   BannerSetting,
   CreateOrdersWidget,
@@ -67,9 +66,12 @@ import {
   PRIVACY_URL,
   CUSTOMER_DETAIL_URL,
   CREATE_ORDER_URL,
+  CUSTOMER_CLUB_URL
 } from 'config/constantUrl';
 
 import PrivateRoute from './PrivateRoutes';
+import Error404 from 'pages/errors/404';
+import CustomerClubSetting from 'pages/setting/CustomerClubSetting';
 import { BANNER_URL } from './../config/constantUrl';
 
 export const MainRoutes = () => {
@@ -193,8 +195,8 @@ export const MainRoutes = () => {
 
         <PrivateRoute
           exact={true}
-          path={PRIVACY_URL}
-          component={PrivaciesSetting}
+          path={CUSTOMER_CLUB_URL}
+          component={CustomerClubSetting}
         />
 
         {/* ProductCategory */}
@@ -239,7 +241,7 @@ export const MainRoutes = () => {
           component={FaqsAddEditWidget}
         />
 
-        <Route path={'*'} component={() => <div>Not Found</div>} />
+        <Route path={'*'} component={Error404} />
       </Switch>
     </>
   );
