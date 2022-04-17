@@ -86,9 +86,6 @@ yarn-error.log*
 .rest
 
 *.zip
-src/config/urls.ts
-yarn.lock
-.yarnrc.yml
 .yarn/install-state.gz
-src/config/urls.ts
-
+.yarnrc.yml
+yarn.lock

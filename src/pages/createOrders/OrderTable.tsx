@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Table, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -10,9 +10,7 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
   response: productsList,
   onDelete,
   loading,
-  // onPaginationChange,
 }) => {
-  // const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation();
 
   const tableColumns = [
@@ -22,9 +20,14 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
       width: 60,
       render: (text, record, index) => index + 1,
     },
+    // {
+    //   title: t('کد محصول'),
+    //   dataIndex: 'productId',
+    //   width: 100,
+    // },
     {
       title: t('کد محصول'),
-      dataIndex: 'productId',
+      dataIndex: 'materialId',
       width: 100,
     },
     {
@@ -66,11 +69,6 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
     },
   ];
 
-  // const handleChange = (page: number, pageSize?: number) => {
-  //   setCurrentPage(page);
-  //   onPaginationChange!(page, pageSize ? pageSize : 1);
-  // };
-
   return (
     <>
       <Table
@@ -84,14 +82,6 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
         }}
         loading={loading}
         pagination={false}
-        // pagination={{
-        //   total: productsList.length,
-        //   current: !!currentPage ? currentPage : 1,
-        //   hideOnSinglePage: false,
-        //   showSizeChanger: true,
-        //   position: ['bottomLeft'],
-        //   onChange: handleChange,
-        // }}
       />
     </>
   );

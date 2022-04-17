@@ -21,9 +21,9 @@ div.content__collapsed {
   padding-right: 275px;
 }
 
-@media screen and (min-width: 321px) and (max-width: 959px) {
+@media screen and (min-width: 270px) and (max-width: 992px) {
   div.content__wrapper {
-    padding-right: 66px !important;
+    padding-right: 20px !important;
   }
   div.content__collapsed {
     padding-right: 0 !important;
@@ -78,7 +78,6 @@ aside.nav__sider {
     color: #ea2125 !important;
   }
 }
-
 .ant-message {
   z-index: 13791379 !important;
 }

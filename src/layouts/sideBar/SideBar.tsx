@@ -19,7 +19,6 @@ import { Layout } from 'antd';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
 import { MenuContainer } from './style';
 import {
   CONTACTUS_URL,
@@ -37,11 +36,10 @@ import {
   PRE_REGISTRATION_CUSTOMERS,
   MESSAGES,
   CONSULT_URL,
-  PRIVACY_URL,
   TERM_URL,
+  CREATE_ORDER_URL,
   CUSTOMER_CLUB_URL,
   BANNER_URL,
-  CREATE_ORDER_URL,
 } from 'config/constantUrl';
 import RemoSysMenu from '../../uiKits/menu/RemoSysMenu';
 import '../style.scss';
@@ -60,7 +58,7 @@ const Sidebar = () => {
   const { t } = useTranslation();
 
   const [menus, setMenus] = useState<IMenus[]>([]);
-
+  const [breakLgPoint, setBreakLgPoint] = useState(false);
   useEffect(() => {
     if (!!userProfile) {
       const menusInit: IMenus[] = [
@@ -128,15 +126,24 @@ const Sidebar = () => {
           icon: FileDoneOutlined,
           title: t('orderManagment'),
           show: userProfile.roleName === 'Admin',
-          children: [],
+          children: [
+            {
+              key: CREATE_ORDER_URL,
+              icon: FileDoneOutlined,
+              title: t('createOrder'),
+              show: userProfile.roleName === 'Admin',
+              children: [],
+            },
+            {
+              key: ORDER_URL,
+              icon: FileDoneOutlined,
+              title: t('showOrders'),
+              show: userProfile.roleName === 'Admin',
+              children: [],
+            },
+          ],
         },
-        {
-          key: CREATE_ORDER_URL,
-          icon: FileDoneOutlined,
-          title: t('createOrder'),
-          show: userProfile.roleName === 'Admin',
-          children: [],
-        },
+
         {
           key: CONSULT_URL,
           icon: PhoneOutlined,
@@ -161,6 +168,36 @@ const Sidebar = () => {
             userProfile.roleName === 'Admin' ||
             userProfile.roleName === 'Supporter' ||
             userProfile.roleName === 'SeoContent',
+          children: [],
+        },
+        {
+          key: SUBSCRIBER_LIST_URL,
+          icon: ContainerOutlined,
+          title: t('Newsletters'),
+          show:
+            userProfile.roleName === 'Admin' ||
+            userProfile.roleName === 'Supporter',
+          children: [],
+        },
+        {
+          key: CONTACTUS_URL,
+          icon: ContactsOutlined,
+          title: t('contactUs'),
+          show: userProfile.roleName === 'Admin',
+          children: [],
+        },
+        {
+          key: COMPANY_URL,
+          icon: BoldOutlined,
+          title: t('company'),
+          show: userProfile.roleName === 'Admin',
+          children: [],
+        },
+        {
+          key: FAQS_URL,
+          icon: QuestionOutlined,
+          title: t('Faqs'),
+          show: userProfile.roleName === 'Admin',
           children: [],
         },
         {
@@ -203,42 +240,11 @@ const Sidebar = () => {
             },
           ],
         },
-        {
-          key: SUBSCRIBER_LIST_URL,
-          icon: ContainerOutlined,
-          title: t('Newsletters'),
-          show:
-            userProfile.roleName === 'Admin' ||
-            userProfile.roleName === 'Supporter',
-          children: [],
-        },
-        {
-          key: CONTACTUS_URL,
-          icon: ContactsOutlined,
-          title: t('contactUs'),
-          show: userProfile.roleName === '123',
-          children: [],
-        },
-        {
-          key: COMPANY_URL,
-          icon: BoldOutlined,
-          title: t('company'),
-          show: userProfile.roleName === 'Admin',
-          children: [],
-        },
-        {
-          key: FAQS_URL,
-          icon: QuestionOutlined,
-          title: t('Faqs'),
-          show: userProfile.roleName === 'Admin',
-          children: [],
-        },
       ];
 
       setMenus(menusInit);
     }
   }, [userProfile]);
-
   useEffect(() => {
     setSelectedMenu(location.pathname);
   }, [location]);
@@ -246,55 +252,58 @@ const Sidebar = () => {
   const handleClickMenu = ({ item, key, keyPath, domEvent }) => {
     history.push(key);
   };
-
   return (
     <Sider
       width={250}
       collapsed={openSider}
+      breakpoint='lg'
+      onBreakpoint={(broken) => {
+        setBreakLgPoint(broken);
+      }}
+      collapsedWidth={breakLgPoint ? 0 : 80}
       className={'nav__sider'}
       style={{ display: !loginPage ? 'block' : 'none' }}
     >
-      <MenuContainer>
-        <RemoSysMenu
-          mode={'inline'}
-          theme='light'
-          style={{ borderLeft: 0, height: window.innerHeight }}
-          onClick={handleClickMenu}
-          selectedKeys={[selectedMenu]}
-        >
-          {menus.length > 0 &&
-            menus.map((_item: IMenus) => {
-              if (_item.children.length > 0) {
-                return (
-                  <SubMenu
-                    key={_item.key}
-                    icon={<_item.icon className={'sidebar__icon'} />}
-                    title={t(_item.title)}
-                  >
-                    {_item.children.map((_child: IMenus) => (
-                      <Menu.Item
-                        key={_child.key}
-                        style={{ display: _child.show ? 'flex' : 'none' }}
-                      >
-                        {t(_child.title)}
-                      </Menu.Item>
-                    ))}
-                  </SubMenu>
-                );
-              } else {
-                return (
-                  <Menu.Item
-                    key={_item.key}
-                    icon={<_item.icon className={'sidebar__icon'} />}
-                    style={{ display: _item.show ? 'block' : 'none' }}
-                  >
-                    {t(_item.title)}
-                  </Menu.Item>
-                );
-              }
-            })}
-        </RemoSysMenu>
-      </MenuContainer>
+      <RemoSysMenu
+        mode={'inline'}
+        theme='light'
+        style={{ borderLeft: 0, height: window.innerHeight }}
+        onClick={handleClickMenu}
+        selectedKeys={[selectedMenu]}
+      >
+        {menus.length > 0 &&
+          menus.map((_item: IMenus) => {
+            if (_item.children.length > 0) {
+              return (
+                <SubMenu
+                  key={_item.key}
+                  icon={<_item.icon className={'sidebar__icon'} />}
+                  title={t(_item.title)}
+                >
+                  {_item.children.map((_child: IMenus) => (
+                    <Menu.Item
+                      key={_child.key}
+                      style={{ display: _child.show ? 'flex' : 'none' }}
+                    >
+                      {t(_child.title)}
+                    </Menu.Item>
+                  ))}
+                </SubMenu>
+              );
+            } else {
+              return (
+                <Menu.Item
+                  key={_item.key}
+                  icon={<_item.icon className={'sidebar__icon'} />}
+                  style={{ display: _item.show ? 'block' : 'none' }}
+                >
+                  {t(_item.title)}
+                </Menu.Item>
+              );
+            }
+          })}
+      </RemoSysMenu>
+      <MenuContainer />
     </Sider>
   );
 };

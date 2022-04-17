@@ -5,11 +5,12 @@ import {
   Form,
   InputNumber,
   message,
+  Modal,
   Row,
   Select,
   Spin,
 } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import OrderTable from './OrderTable';
 import AppBreadCrumbs from 'layouts/appBreadcrumbs/AppBreadcrumbs';
@@ -24,8 +25,13 @@ const { Option } = Select;
 
 function CreateOrders() {
   const { t } = useTranslation();
+  const productFocus = useRef<any>(null);
+  const customerFocus = useRef<any>(null);
+  const numberFocus = useRef<any>(null);
 
   const { postRequest, getRequest } = useHttpRequest();
+
+  const [open, setOpen] = useState<boolean>(false);
 
   const [searchProductValue, setSearchProductValue] = useState<any>();
   const [searchCustomerValue, setSearchCustomerValue] = useState<any>();
@@ -35,25 +41,33 @@ function CreateOrders() {
 
   const [selectCustomer, setSelectCustomer] = useState<boolean>(false);
 
+  const [productDisabled, setProductDisabled] = useState<boolean>(true);
+  const [numberDisabled, setNumberDisabled] = useState<boolean>(true);
+
   const [nameRequired, setNameRequired] = useState<boolean>(true);
 
   const [customerName, setCustomerName] = useState('');
   const [customers, setCustomers] = useState<any>([]);
   const [customerId, setCustomerId] = useState('');
-  const [currentProduct, setCurrentProduct] = useState<any>('');
+  const [currentProduct, setCurrentProduct] = useState<any>(null);
+
+  const [productCounter, setProductCounter] = useState<any>(null);
 
   const [finalInvoice, setFinalInvoice] = useState<any>({
     count: 0,
-    totalPrice: 0,
+    totalPrice: '0',
   });
 
-  const [productId, setProductId] = useState();
   const [products, setProducts] = useState<any>([]);
   const [productsList, setProductsList] = useState<any>([]);
 
   const [form] = Form.useForm();
 
   const handleSubmitForm = (event) => {
+    if (productsList.length === 0) {
+      message.error(t('orderEmpty'));
+      return;
+    }
     const newProductList = productsList.map(
       ({ name, price, key, unitPrice, ...item }) => item
     );
@@ -65,7 +79,12 @@ function CreateOrders() {
     postRequest(`${SUBMIT_TO_ORDER_LIST}`, body)
       .then(() => {
         resetForm();
+        setProductDisabled(true);
+        setNumberDisabled(true);
+        setProductCounter(null);
+        setCurrentProduct(null);
         message.success(t('orderSuccessCreated'));
+        customerFocus.current.focus();
       })
       .catch(() => {
         setLoading(false);
@@ -84,16 +103,26 @@ function CreateOrders() {
     setSelectCustomer(false);
     setLoading(false);
     setNameRequired(true);
+    setCustomerId('');
     form.setFieldsValue({
       customerId: '',
       productId: '',
-      productNumber: 1,
+      productNumber: '',
     });
   };
   const cancellation = () => {
+    setOpen(false);
     resetForm();
-    setLoading(false), message.warning(t('orderCancellation'));
+    setProductDisabled(true);
+    setNumberDisabled(true);
+    setProductCounter(null);
+    setCurrentProduct(null);
+    message.warning(t('orderCancellation'));
+    setTimeout(() => {
+      customerFocus.current.focus();
+    }, 500);
   };
+
   const handleAddItems = (event) => {
     event.stopPropagation();
     form.validateFields().then((values) => {
@@ -115,6 +144,7 @@ function CreateOrders() {
           {
             key: currentProduct.id,
             productId: currentProduct.id,
+            materialId: currentProduct.materialId,
             name: currentProduct.name,
             count: values.productNumber,
             unitPrice: UtilsHelper.threeDigitSeparator(currentProduct.price),
@@ -125,45 +155,48 @@ function CreateOrders() {
           ...productsList,
         ]);
       }
+      setProducts([]);
+      setCurrentProduct(null);
+      setProductCounter(null);
+      productFocus.current.focus();
     });
   };
 
   const handleSearchCustomer = (val) => {
-    setSearchCustomerValue(val);
-    if (!!val && val.length > 2) {
+    if (!!val) {
       setLoadingSearch(true);
-      getRequest(
-        `${CUSTOMERS_CRUD}?search=${
-          !!searchCustomerValue ? searchCustomerValue : ''
-        }`
-      )
+      getRequest(`${CUSTOMERS_CRUD}?search=${val}`)
         .then((resp) => {
+          setSearchCustomerValue(val);
           setCustomers(resp.data.items);
           setLoadingSearch(false);
         })
         .catch((err) => {
           setLoadingSearch(false);
         });
+    } else {
+      setSearchCustomerValue(val);
+      setCustomers([]);
+      setLoadingSearch(false);
     }
   };
 
   const handleSearchProduct = (val) => {
-    console.log(val);
-    setSearchProductValue(val);
-    if (!!val && val.length > 2) {
+    if (!!val) {
       setLoadingSearch(true);
-      getRequest(
-        `${PRODUCTS_CRUD}?CustomerId=${customerId}&search=${
-          !!searchProductValue ? searchProductValue : ''
-        }`
-      )
+      getRequest(`${PRODUCTS_CRUD}?CustomerId=${customerId}&search=${val}`)
         .then((resp) => {
+          setSearchProductValue(val);
           setProducts(resp.data.items);
           setLoadingSearch(false);
         })
         .catch((err) => {
           setLoadingSearch(false);
         });
+    } else {
+      setSearchProductValue(val);
+      setProducts([]);
+      setLoadingSearch(false);
     }
   };
 
@@ -180,20 +213,25 @@ function CreateOrders() {
         sumPrice += item.count * item.unitPrice.replace(/\,/g, '');
         sumCount += item.count;
       });
-      setFinalInvoice({
-        count: sumCount,
-        totalPrice: sumPrice,
-      });
     }
+    setFinalInvoice({
+      count: sumCount,
+      totalPrice: sumPrice,
+    });
   };
   const getCustomerInfo = () => {
     const cashedCustomer = localStorage.getItem('CUSTOMER');
     if (!!cashedCustomer) {
       const JSONcustomer = JSON.parse(cashedCustomer);
+      setProductDisabled(false);
+      setNumberDisabled(false);
       setCustomerName(JSONcustomer.label);
       setCustomerId(JSONcustomer.key);
       setNameRequired(false);
       setSelectCustomer(true);
+      setTimeout(() => {
+        productFocus.current.focus();
+      }, 500);
     }
   };
 
@@ -204,6 +242,7 @@ function CreateOrders() {
       : [];
     setProductsList(cashedProductListArray);
   };
+
   useEffect(() => {
     getCustomerInfo();
     getProductListInfo();
@@ -211,20 +250,48 @@ function CreateOrders() {
   useEffect(() => {
     getFinalInvoice();
     localStorage.setItem('ORDER_TABLE', JSON.stringify(productsList));
+    form.setFieldsValue({
+      productId: '',
+      productNumber: '',
+      materialId: '',
+    });
   }, [productsList]);
 
   return (
     <>
+      <Modal
+        title={'لغو سفارش'}
+        visible={open}
+        onCancel={() => setOpen(false)}
+        key={'modal_create'}
+        width={275}
+        footer={[
+          <Row justify={'end'} key={'row_footer'}>
+            <Button onClick={() => setOpen(false)}>خیر</Button>
+
+            <Button type={'primary'} onClick={cancellation}>
+              بله
+            </Button>
+          </Row>,
+        ]}
+      >
+        <Row>
+          <Col xs={24} sm={24} md={24}>
+            آیا از لغو این سفارش اطمینان دارید ؟
+          </Col>
+        </Row>
+      </Modal>
+
       <AppBreadCrumbs pageTitle={'ایجاد سفارش برای مشتری'} />
       <Form form={form} layout='vertical'>
         <Row style={{ paddingTop: '24px' }} gutter={24}>
-          <Col xs={24} sm={24} md={15} lg={15}>
-            <Card style={{ maxHeight: '230px' }}>
+          <Col xs={24} sm={24} md={24} lg={15}>
+            <Card style={{ minHeight: '230px' }}>
               <Row>
                 <Col
                   xs={24}
                   sm={24}
-                  md={12}
+                  md={24}
                   lg={12}
                   style={{ maxHeight: '95px' }}
                 >
@@ -239,6 +306,7 @@ function CreateOrders() {
                     ]}
                   >
                     <Select
+                      ref={customerFocus}
                       disabled={selectCustomer}
                       showSearch={true}
                       labelInValue={true}
@@ -257,6 +325,13 @@ function CreateOrders() {
                         );
                         setSelectCustomer(true);
                         localStorage.setItem('CUSTOMER', JSON.stringify(val));
+                        setProductDisabled(false);
+                        setNumberDisabled(false);
+                        if (customers && productFocus.current.disabled === true)
+                          productFocus.current.disabled = false;
+                        setTimeout(() => {
+                          productFocus.current.focus();
+                        }, 500);
                       }}
                       onSearch={handleSearchCustomer}
                       notFoundContent={
@@ -274,17 +349,17 @@ function CreateOrders() {
                     </Select>
                   </Form.Item>
 
-                  {!!searchCustomerValue && (
+                  {/* {!!searchCustomerValue && (
                     <p style={{ color: '#EA2125' }}>
                       {searchCustomerValue.length < 3
                         ? 'طول نام وارد شده نباید کمتر از 2 باشد'
                         : ''}
                     </p>
-                  )}
+                  )} */}
                 </Col>
               </Row>
-              <Row>
-                <Col xs={24} sm={24} md={12} lg={12}>
+              <Row align='middle' gutter={24}>
+                <Col xs={24} sm={24} md={24} lg={12}>
                   <Form.Item
                     label={t('productName')}
                     name='productId'
@@ -296,6 +371,9 @@ function CreateOrders() {
                     ]}
                   >
                     <Select
+                      disabled={productDisabled}
+                      ref={productFocus}
+                      autoFocus={false}
                       showSearch={true}
                       labelInValue={true}
                       placeholder={
@@ -308,10 +386,11 @@ function CreateOrders() {
                       showArrow={false}
                       filterOption={false}
                       onChange={(val: any) => {
-                        setProductId(val.value);
                         setCurrentProduct(
                           products.find((item) => item.id === val.value)
                         );
+
+                        numberFocus.current.focus();
                       }}
                       onSearch={handleSearchProduct}
                       notFoundContent={
@@ -319,6 +398,7 @@ function CreateOrders() {
                       }
                     >
                       {products.length > 0 &&
+                        customerName.length > 0 &&
                         products.map((_elm: any, index) => {
                           return (
                             <Option key={index} value={_elm.id}>
@@ -328,106 +408,125 @@ function CreateOrders() {
                         })}
                     </Select>
                   </Form.Item>
-                  {!!searchProductValue && (
+                  {/* {!!searchProductValue && (
                     <p style={{ color: '#EA2125' }}>
                       {searchProductValue.length < 3
-                        ? 'طول نام محصول وارد شده نباید کمتر از 2 باشد'
+                        ? 'طول نام وارد شده نباید کمتر از 2 باشد'
                         : ''}
                     </p>
-                  )}
+                  )} */}
                 </Col>
-                <Col xs={24} sm={24} md={12} lg={12}>
-                  <Row>
-                    <Form.Item
-                      style={{ marginRight: '15px' }}
-                      name='productNumber'
-                      rules={[{ required: true, message: 'تعداد اجباریست' }]}
-                      label={t('تعداد')}
-                    >
-                      <InputNumber min={1} onPressEnter={handleAddItems} />
-                    </Form.Item>
-
-                    <Button
-                      type='primary'
-                      onClick={handleAddItems}
-                      style={{ marginRight: '10px', marginTop: '28px' }}
-                    >
-                      {t('افزودن +')}
-                    </Button>
-                  </Row>
+                <Col xs={24} sm={24} md={12} lg={7}>
+                  <Form.Item
+                    className='product_count'
+                    name='productNumber'
+                    label={t('تعداد')}
+                  >
+                    <InputNumber
+                      disabled={numberDisabled}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      ref={numberFocus}
+                      width={100}
+                      style={{
+                        width: '100%',
+                      }}
+                      min={1}
+                      onChange={(e: number) => {
+                        setProductCounter(e);
+                      }}
+                      onPressEnter={handleAddItems}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={5}>
+                  <Button
+                    disabled={
+                      productCounter === null || currentProduct === null
+                    }
+                    style={{ justifyContent: 'center' }}
+                    block={true}
+                    type='primary'
+                    onClick={handleAddItems}
+                  >
+                    {t('افزودن')}
+                  </Button>
                 </Col>
               </Row>
             </Card>
-            <br />
-            <br />
           </Col>
 
-          <Col xs={24} sm={24} md={9} lg={9}>
-            <Card style={{ height: '230px' }}>
+          <Col xs={24} sm={24} md={24} lg={9}>
+            <Card className='responsive_card'>
               <Row>
-                <h5>
+                {/* <h5>
                   {t('sumCount')}: {finalInvoice.count}
+                </h5> */}
+                <h5>
+                  {t('sumCount')}: {productsList.length}
                 </h5>
               </Row>
               <br />
               <Row>
                 <h5>
                   {t('sumTotalPrice')}:{' '}
-                  {UtilsHelper.threeDigitSeparator(finalInvoice.totalPrice)}
+                  {finalInvoice.totalPrice
+                    ? UtilsHelper.threeDigitSeparator(finalInvoice.totalPrice)
+                    : '0'}
                 </h5>
               </Row>
-              <br />
-              <br />
-              <br />
-              <Row style={{ direction: 'ltr' }}>
-                <Button
-                  type='primary'
-                  onClick={
-                    loading
-                      ? () => {
-                          return;
-                        }
-                      : handleSubmitForm
-                  }
-                  loading={loading}
-                >
-                  {t('ثبت سفارش')}
-                </Button>
-                <br />
-                <Button
-                  style={{
-                    backgroundColor: 'gray',
-                    borderColor: 'gray',
-                    width: '110px',
-                    marginLeft: '10px',
-                  }}
-                  type='primary'
-                  onClick={
-                    loading
-                      ? () => {
-                          return;
-                        }
-                      : cancellation
-                  }
-                  loading={loading}
-                >
-                  {t('لغو سفارش')}
-                </Button>
+
+              <Row className='btns_container' justify='end'>
+                <Col xs={24} sm={24} md={8} lg={8} className='btn_container'>
+                  <Button
+                    block={true}
+                    type='primary'
+                    style={{
+                      justifyContent: 'center',
+                    }}
+                    onClick={
+                      loading
+                        ? () => {
+                            return;
+                          }
+                        : handleSubmitForm
+                    }
+                    loading={loading}
+                  >
+                    {t('ثبت سفارش')}
+                  </Button>
+                </Col>
+                <Col xs={24} sm={24} md={8} lg={8} className='btn_container'>
+                  <Button
+                    block={true}
+                    style={{
+                      backgroundColor: 'gray',
+                      borderColor: 'gray',
+                      justifyContent: 'center',
+                    }}
+                    type='primary'
+                    onClick={() => {
+                      if (!customerId || customerId === '') {
+                        message.error(t('orderNotInit'));
+                        return;
+                      }
+                      setOpen(true);
+                    }}
+                    loading={loading}
+                  >
+                    {t('لغو سفارش')}
+                  </Button>
+                </Col>
               </Row>
-              <br />
             </Card>
           </Col>
         </Row>
       </Form>
 
-      <OrderTable
-        response={productsList}
-        onDelete={handleDeleteProductsItem}
-        // onPaginationChange={() => {
-        //   return;
-        // }}
-        // loading={loading}
-      />
+      <OrderTable response={productsList} onDelete={handleDeleteProductsItem} />
     </>
   );
 }

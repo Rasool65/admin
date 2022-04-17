@@ -47,9 +47,9 @@ div.card__header__btn__container {
   & button.btn__header__cancel {
     margin-right: 16px;
   }
-  // & button.btn_addEdit {
-  // box-shadow: 0 0 8px 4px rgba(87, 119, 255, 0.22);
-  // }
+  & button.btn_addEdit {
+    box-shadow: 0 0 8px 4px rgba(87, 119, 255, 0.22);
+  }
 }
 
 div.toolbar__Wrapper {
@@ -105,4 +105,39 @@ div.static-page {
 }
 .mt-15 {
   margin-top: 15px;
+}
+
+.responsive_card {
+  min-height: 230px;
+}
+
+@media screen and (max-width: 990px) {
+  .responsive_card {
+    min-height: fit-content;
+  }
+}
+
+.product_count {
+  margin-right: 15px;
+}
+.btn_container {
+  margin: 0.75rem 0.5rem;
+}
+.btns_container {
+  margin-top: 47px;
+}
+
+@media screen and (max-width: 995px) {
+  .product_count {
+    margin-right: 0;
+  }
+  .btns_container {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .btn_container {
+    margin: 0.3rem 0;
+  }
 }
