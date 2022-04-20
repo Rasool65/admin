@@ -18,6 +18,7 @@ import {
   SUBMIT_TO_ORDER_LIST,
   CUSTOMERS_CRUD,
   PRODUCTS_CRUD,
+  CART_GET_PRODUCTS_WITH_PRICE,
 } from 'config/constantApi';
 import useHttpRequest from 'hooks/useHttpRequest';
 import { UtilsHelper } from 'utils/UtilsHelper';
@@ -63,27 +64,35 @@ function CreateOrders() {
 
   const [form] = Form.useForm();
 
-  const handleSubmitForm = (event) => {
+  const handleGetPrice = (event) => {
     if (productsList.length === 0) {
       message.error(t('orderEmpty'));
       return;
     }
+
     const newProductList = productsList.map(
-      ({ name, price, key, unitPrice, ...item }) => item
+      ({ name, price, key, unitPrice, productId, ...item }) => item
     );
     const body = {
       customerId,
-      productList: newProductList,
+      carts: newProductList,
     };
     setLoading(true);
-    postRequest(`${SUBMIT_TO_ORDER_LIST}`, body)
-      .then(() => {
+    debugger;
+    postRequest(
+      'http://127.0.0.1:3500/cart/getproductswithprice',
+      // `${CART_GET_PRODUCTS_WITH_PRICE}`
+      body
+    )
+      .then((result) => {
+        debugger;
+        setProductsList(result.data.data); // new list
         resetForm();
         setProductDisabled(true);
         setNumberDisabled(true);
         setProductCounter(null);
         setCurrentProduct(null);
-        message.success(t('orderSuccessCreated'));
+        message.success(t('محاسبه قیمت ها از SAP دریافت شد'));
         customerFocus.current.focus();
       })
       .catch(() => {
@@ -97,7 +106,7 @@ function CreateOrders() {
       count: 0,
       totalPrice: 0,
     });
-    setProductsList([]);
+    // setProductsList([]);
     setCustomers([]);
     setProducts([]);
     setSelectCustomer(false);
@@ -134,9 +143,10 @@ function CreateOrders() {
         const currentItem = productsList[productIndex];
         const items = [...productsList];
         currentItem.count = values.productNumber;
-        currentItem.price = UtilsHelper.threeDigitSeparator(
-          currentItem.unitPrice.replace(/\,/g, '') * values.productNumber
-        );
+        currentItem.focIndicator = false;
+        // currentItem.price = UtilsHelper.threeDigitSeparator(
+        //   currentItem.unitPrice.replace(/\,/g, '') * values.productNumber
+        // );
         items[productIndex] = currentItem;
         setProductsList(items);
       } else {
@@ -147,10 +157,11 @@ function CreateOrders() {
             materialId: currentProduct.materialId,
             name: currentProduct.name,
             count: values.productNumber,
-            unitPrice: UtilsHelper.threeDigitSeparator(currentProduct.price),
-            price: UtilsHelper.threeDigitSeparator(
-              currentProduct.price * values.productNumber
-            ),
+            focIndicator: false,
+            // unitPrice: UtilsHelper.threeDigitSeparator(currentProduct.price),
+            // price: UtilsHelper.threeDigitSeparator(
+            // currentProduct.price * values.productNumber
+            // ),
           },
           ...productsList,
         ]);
@@ -206,17 +217,17 @@ function CreateOrders() {
   };
 
   const getFinalInvoice = () => {
-    let sumPrice = 0;
+    // let sumPrice = 0;
     let sumCount = 0;
     if (productsList.length > 0) {
       productsList.forEach((item) => {
-        sumPrice += item.count * item.unitPrice.replace(/\,/g, '');
+        // sumPrice += item.count * item.unitPrice.replace(/\,/g, '');
         sumCount += item.count;
       });
     }
     setFinalInvoice({
       count: sumCount,
-      totalPrice: sumPrice,
+      // totalPrice: sumPrice,
     });
   };
   const getCustomerInfo = () => {
@@ -327,7 +338,7 @@ function CreateOrders() {
                         localStorage.setItem('CUSTOMER', JSON.stringify(val));
                         setProductDisabled(false);
                         setNumberDisabled(false);
-                        if (customers && productFocus.current.disabled === true)
+                        if (customers && productFocus.current.disabled == true)
                           productFocus.current.disabled = false;
                         setTimeout(() => {
                           productFocus.current.focus();
@@ -492,11 +503,11 @@ function CreateOrders() {
                         ? () => {
                             return;
                           }
-                        : handleSubmitForm
+                        : handleGetPrice
                     }
                     loading={loading}
                   >
-                    {t('ثبت سفارش')}
+                    {t('مشاهده قیمت')}
                   </Button>
                 </Col>
                 <Col xs={24} sm={24} md={8} lg={8} className='btn_container'>

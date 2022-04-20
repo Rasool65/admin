@@ -7,7 +7,7 @@ import { OrderModel } from './widget-type';
 import EmptyTable from 'uiKits/emptyTable/EmptyTable';
 
 const OrderTable: React.FC<ITable<OrderModel>> = ({
-  response: productsList,
+  response: cart,
   onDelete,
   loading,
 }) => {
@@ -39,11 +39,11 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
       dataIndex: 'count',
       width: 70,
     },
-    {
-      title: t('unitPriceProduct'),
-      dataIndex: 'unitPrice',
-      width: 130,
-    },
+    // {
+    //   title: t('unitPriceProduct'),
+    //   dataIndex: 'unitPrice',
+    //   width: 130,
+    // },
     {
       title: t('sumPrice'),
       dataIndex: 'price',
@@ -74,7 +74,7 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
       <Table
         scroll={{ x: 1024, y: 240 }}
         columns={tableColumns}
-        dataSource={productsList ? productsList : []}
+        dataSource={cart ? cart : []}
         rowKey='id'
         showSorterTooltip={false}
         locale={{

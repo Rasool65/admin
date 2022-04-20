@@ -58,6 +58,7 @@ export const PRODUCTS_CRUD = '/admin/product/getforcustomer';
 
 // cart
 export const CART_API = '/admin/cart';
+export const CART_GET_PRODUCTS_WITH_PRICE = '/admin/cart/getproductswithprice';
 
 // order
 export const ORDER_API = '/admin/orders';

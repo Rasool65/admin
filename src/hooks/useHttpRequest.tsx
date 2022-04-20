@@ -20,7 +20,7 @@ const useHttpRequest = () => {
         });
 
         resolve(res);
-      } catch (error) {
+      } catch (error: any) {
         message.error(error?.response?.data?.message, 4);
 
         reject(error);
@@ -44,7 +44,7 @@ const useHttpRequest = () => {
           ...config,
         });
         resolve(res);
-      } catch (error) {
+      } catch (error: any) {
         message.error(error?.response?.data?.message, 4);
 
         reject(error);
@@ -65,7 +65,7 @@ const useHttpRequest = () => {
         });
 
         resolve(res);
-      } catch (error) {
+      } catch (error: any) {
         message.error(error?.response?.data?.message, 4);
         reject(error);
       }
@@ -84,7 +84,7 @@ const useHttpRequest = () => {
         });
 
         resolve(res);
-      } catch (error) {
+      } catch (error: any) {
         message.error(error?.response?.data?.message, 4);
 
         reject(error);
