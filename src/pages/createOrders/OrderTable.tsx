@@ -32,12 +32,22 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
     },
     {
       title: t('نام محصول'),
-      dataIndex: 'name',
+      dataIndex: 'productName',
     },
     {
       title: t('تعداد'),
       dataIndex: 'count',
       width: 70,
+    },
+    {
+      title: t('مالیات بر ارزش افزوده'),
+      dataIndex: 'tax',
+      width: 100,
+    },
+    {
+      title: t('تخفیف'),
+      dataIndex: 'discount',
+      width: 100,
     },
     // {
     //   title: t('unitPriceProduct'),
@@ -54,17 +64,23 @@ const OrderTable: React.FC<ITable<OrderModel>> = ({
       dataIndex: 'actions',
       width: 100,
       render: (_, record) => (
-        <div className='d-flex'>
-          <Tooltip title={t('delete')}>
-            <Button
-              danger={true}
-              className='mr-2 d-flex justify-content-center align-items-center'
-              icon={<DeleteOutlined />}
-              onClick={onDelete!(record.productId)}
-              size='small'
-            />
-          </Tooltip>
-        </div>
+        <>
+          {record.focIndicator ? (
+            'اشانتیون'
+          ) : (
+            <div className='d-flex'>
+              <Tooltip title={t('delete')}>
+                <Button
+                  danger={true}
+                  className='mr-2 d-flex justify-content-center align-items-center'
+                  icon={<DeleteOutlined />}
+                  onClick={onDelete!(record.productId)}
+                  size='small'
+                />
+              </Tooltip>
+            </div>
+          )}
+        </>
       ),
     },
   ];

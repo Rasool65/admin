@@ -19,6 +19,7 @@ import {
   CUSTOMERS_CRUD,
   PRODUCTS_CRUD,
   CART_GET_PRODUCTS_WITH_PRICE,
+  CART_API,
 } from 'config/constantApi';
 import useHttpRequest from 'hooks/useHttpRequest';
 import { UtilsHelper } from 'utils/UtilsHelper';
@@ -44,6 +45,7 @@ function CreateOrders() {
 
   const [productDisabled, setProductDisabled] = useState<boolean>(true);
   const [numberDisabled, setNumberDisabled] = useState<boolean>(true);
+  const [confirmBtn, setConfirmBtn] = useState<boolean>(false);
 
   const [nameRequired, setNameRequired] = useState<boolean>(true);
 
@@ -60,39 +62,92 @@ function CreateOrders() {
   });
 
   const [products, setProducts] = useState<any>([]);
-  const [productsList, setProductsList] = useState<any>([]);
+  const [productsList, setProductsList] = useState<any>([
+    {
+      key: 0,
+      productId: 0,
+      productName: '',
+      materialId: '',
+      count: 0,
+      price: 0,
+      focIndicator: false,
+      discount: 0,
+      tax: 0,
+    },
+  ]);
 
   const [form] = Form.useForm();
 
+  //مشاهده قیمت
   const handleGetPrice = (event) => {
     if (productsList.length === 0) {
       message.error(t('orderEmpty'));
       return;
     }
-
     const newProductList = productsList.map(
-      ({ name, price, key, unitPrice, productId, ...item }) => item
+      ({ productName, price, key, unitPrice, productId, ...item }) => item
     );
     const body = {
       customerId,
       carts: newProductList,
     };
     setLoading(true);
-    debugger;
     postRequest(
       'http://127.0.0.1:3500/cart/getproductswithprice',
       // `${CART_GET_PRODUCTS_WITH_PRICE}`
       body
     )
       .then((result) => {
-        debugger;
         setProductsList(result.data.data); // new list
+        setLoading(false);
+        // resetForm();
+        // setProductDisabled(true);
+        // setNumberDisabled(true);
+        // setProductCounter(null);
+        // setCurrentProduct(null);
+        setConfirmBtn(true);
+        message.success(t('محاسبه قیمت ها از SAP دریافت شد'));
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  //تایید نهایی
+  const handleConfirmOrder = (event) => {
+    if (productsList.length === 0) {
+      message.error(t('orderEmpty'));
+      return;
+    }
+    const newProductList = productsList.map(
+      ({
+        tax,
+        discount,
+        productName,
+        price,
+        key,
+        unitPrice,
+        materialId,
+        ...item
+      }) => item
+    );
+    const body = {
+      customerId,
+      carts: newProductList,
+    };
+    setLoading(true);
+    postRequest(`${CART_API}`, body)
+      .then((result) => {
+        setConfirmBtn(false);
+        setLoading(false);
         resetForm();
+        setProductsList([]);
         setProductDisabled(true);
         setNumberDisabled(true);
         setProductCounter(null);
         setCurrentProduct(null);
-        message.success(t('محاسبه قیمت ها از SAP دریافت شد'));
+        setConfirmBtn(true);
+        message.success(t('سفارش با موفقیت ثبت شد'));
         customerFocus.current.focus();
       })
       .catch(() => {
@@ -101,6 +156,7 @@ function CreateOrders() {
   };
 
   const resetForm = () => {
+    setConfirmBtn(false);
     localStorage.setItem('CUSTOMER', '');
     setFinalInvoice({
       count: 0,
@@ -122,6 +178,7 @@ function CreateOrders() {
   const cancellation = () => {
     setOpen(false);
     resetForm();
+    setProductsList([]);
     setProductDisabled(true);
     setNumberDisabled(true);
     setProductCounter(null);
@@ -135,13 +192,16 @@ function CreateOrders() {
   const handleAddItems = (event) => {
     event.stopPropagation();
     form.validateFields().then((values) => {
+      setConfirmBtn(false);
       const productIndex = productsList.findIndex(
         (item) => item.productId === currentProduct.id
       );
       if (productIndex !== -1) {
         // if there is product in array ...
         const currentItem = productsList[productIndex];
-        const items = [...productsList];
+        const items = [...productsList].filter(
+          (item) => item.focIndicator !== true
+        );
         currentItem.count = values.productNumber;
         currentItem.focIndicator = false;
         // currentItem.price = UtilsHelper.threeDigitSeparator(
@@ -150,21 +210,26 @@ function CreateOrders() {
         items[productIndex] = currentItem;
         setProductsList(items);
       } else {
-        setProductsList([
-          {
-            key: currentProduct.id,
-            productId: currentProduct.id,
-            materialId: currentProduct.materialId,
-            name: currentProduct.name,
-            count: values.productNumber,
-            focIndicator: false,
-            // unitPrice: UtilsHelper.threeDigitSeparator(currentProduct.price),
-            // price: UtilsHelper.threeDigitSeparator(
-            // currentProduct.price * values.productNumber
-            // ),
-          },
-          ...productsList,
-        ]);
+        setProductsList(
+          [
+            {
+              key: currentProduct.id,
+              productId: currentProduct.id,
+              materialId: currentProduct.materialId,
+              productName: currentProduct.name,
+              count: values.productNumber,
+              focIndicator: false,
+              price: 0,
+              tax: 0,
+              discount: 0,
+              // unitPrice: UtilsHelper.threeDigitSeparator(currentProduct.price),
+              // price: UtilsHelper.threeDigitSeparator(
+              //   currentProduct.price * values.productNumber
+              // ),
+            },
+            ...productsList,
+          ].filter((item) => item.focIndicator !== true)
+        );
       }
       setProducts([]);
       setCurrentProduct(null);
@@ -212,7 +277,10 @@ function CreateOrders() {
   };
 
   const handleDeleteProductsItem = (id?) => (event: React.MouseEvent) => {
-    const filtered = productsList.filter((item) => item.productId !== id);
+    setConfirmBtn(false);
+    const filtered = productsList.filter(
+      (item) => item.productId !== id && item.focIndicator !== true
+    );
     setProductsList(filtered);
   };
 
@@ -480,7 +548,25 @@ function CreateOrders() {
                   {t('sumCount')}: {productsList.length}
                 </h5>
               </Row>
-              <br />
+              <p></p>
+              <Row>
+                <h5>
+                  {t('تخفیف')}:{' '}
+                  {finalInvoice.totalPrice
+                    ? UtilsHelper.threeDigitSeparator(finalInvoice.totalPrice)
+                    : '0'}
+                </h5>
+              </Row>
+              <p></p>
+              <Row>
+                <h5>
+                  {t('مالیات بر ارزش افزوده')}:{' '}
+                  {finalInvoice.totalPrice
+                    ? UtilsHelper.threeDigitSeparator(finalInvoice.totalPrice)
+                    : '0'}
+                </h5>
+              </Row>
+              <p></p>
               <Row>
                 <h5>
                   {t('sumTotalPrice')}:{' '}
@@ -493,6 +579,7 @@ function CreateOrders() {
               <Row className='btns_container' justify='end'>
                 <Col xs={24} sm={24} md={8} lg={8} className='btn_container'>
                   <Button
+                    hidden={confirmBtn}
                     block={true}
                     type='primary'
                     style={{
@@ -508,6 +595,24 @@ function CreateOrders() {
                     loading={loading}
                   >
                     {t('مشاهده قیمت')}
+                  </Button>
+                  <Button
+                    hidden={!confirmBtn}
+                    block={true}
+                    type='primary'
+                    style={{
+                      justifyContent: 'center',
+                    }}
+                    onClick={
+                      loading
+                        ? () => {
+                            return;
+                          }
+                        : handleConfirmOrder
+                    }
+                    loading={loading}
+                  >
+                    {t('تایید نهایی')}
                   </Button>
                 </Col>
                 <Col xs={24} sm={24} md={8} lg={8} className='btn_container'>
