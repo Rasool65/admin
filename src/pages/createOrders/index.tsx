@@ -52,13 +52,15 @@ function CreateOrders() {
   const [customerName, setCustomerName] = useState('');
   const [customers, setCustomers] = useState<any>([]);
   const [customerId, setCustomerId] = useState('');
-  const [currentProduct, setCurrentProduct] = useState<any>(null);
+  const [currentProduct, setCurrentProduct] = useState<any>(undefined);
 
-  const [productCounter, setProductCounter] = useState<any>(null);
+  const [productCounter, setProductCounter] = useState<any>(undefined);
 
   const [finalInvoice, setFinalInvoice] = useState<any>({
     count: 0,
     totalPrice: '0',
+    totalDiscount:0,
+      totalTax:0
   });
 
   const [products, setProducts] = useState<any>([]);
@@ -80,10 +82,10 @@ function CreateOrders() {
 
   //مشاهده قیمت
   const handleGetPrice = (event) => {
-    if (productsList.length === 0) {
-      message.error(t('orderEmpty'));
-      return;
-    }
+    // if (productsList.length === 0) {
+    //   message.error(t('orderEmpty'));
+    //   return;
+    // }
     const newProductList = productsList.map(
       ({ productName, price, key, unitPrice, productId, ...item }) => item
     );
@@ -161,6 +163,8 @@ function CreateOrders() {
     setFinalInvoice({
       count: 0,
       totalPrice: 0,
+      totalDiscount:0,
+      totalTax:0
     });
     // setProductsList([]);
     setCustomers([]);
@@ -285,17 +289,24 @@ function CreateOrders() {
   };
 
   const getFinalInvoice = () => {
-    // let sumPrice = 0;
+     let sumPrice = 0;
+     let sumDiscount = 0;
+     let sumTax = 0;
     let sumCount = 0;
     if (productsList.length > 0) {
       productsList.forEach((item) => {
         // sumPrice += item.count * item.unitPrice.replace(/\,/g, '');
+        sumPrice += item.price;
         sumCount += item.count;
+        sumTax+=item.tax;
+        sumDiscount+=item.discount;
       });
     }
     setFinalInvoice({
       count: sumCount,
-      // totalPrice: sumPrice,
+      totalPrice: sumPrice,
+      totalDiscount:sumDiscount,
+      totalTax:sumTax,
     });
   };
   const getCustomerInfo = () => {
@@ -552,8 +563,8 @@ function CreateOrders() {
               <Row>
                 <h5>
                   {t('تخفیف')}:{' '}
-                  {finalInvoice.totalPrice
-                    ? UtilsHelper.threeDigitSeparator(finalInvoice.totalPrice)
+                  {finalInvoice.totalDiscount
+                    ? UtilsHelper.threeDigitSeparator(finalInvoice.totalDiscount)
                     : '0'}
                 </h5>
               </Row>
@@ -561,8 +572,8 @@ function CreateOrders() {
               <Row>
                 <h5>
                   {t('مالیات بر ارزش افزوده')}:{' '}
-                  {finalInvoice.totalPrice
-                    ? UtilsHelper.threeDigitSeparator(finalInvoice.totalPrice)
+                  {finalInvoice.totalTax
+                    ? UtilsHelper.threeDigitSeparator(finalInvoice.totalTax)
                     : '0'}
                 </h5>
               </Row>
