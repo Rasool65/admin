@@ -50,7 +50,12 @@ function CreateOrders() {
   const [nameRequired, setNameRequired] = useState<boolean>(true);
 
   const [customerName, setCustomerName] = useState('');
-  const [customers, setCustomers] = useState<any>([]);
+  const [customers, setCustomers] = useState<any>([
+    {
+      label: '',
+      value: '',
+    },
+  ]);
   const [customerId, setCustomerId] = useState('');
   const [currentProduct, setCurrentProduct] = useState<any>(undefined);
 
@@ -59,8 +64,8 @@ function CreateOrders() {
   const [finalInvoice, setFinalInvoice] = useState<any>({
     count: 0,
     totalPrice: '0',
-    totalDiscount:0,
-      totalTax:0
+    totalDiscount: 0,
+    totalTax: 0,
   });
 
   const [products, setProducts] = useState<any>([]);
@@ -80,12 +85,11 @@ function CreateOrders() {
 
   const [form] = Form.useForm();
 
-  //مشاهده قیمت
   const handleGetPrice = (event) => {
-    // if (productsList.length === 0) {
-    //   message.error(t('orderEmpty'));
-    //   return;
-    // }
+    if (productsList.length === 0) {
+      message.error(t('orderEmpty'));
+      return;
+    }
     const newProductList = productsList.map(
       ({ productName, price, key, unitPrice, productId, ...item }) => item
     );
@@ -94,19 +98,10 @@ function CreateOrders() {
       carts: newProductList,
     };
     setLoading(true);
-    postRequest(
-      'http://127.0.0.1:3500/cart/getproductswithprice',
-      // `${CART_GET_PRODUCTS_WITH_PRICE}`
-      body
-    )
+    postRequest(`${CART_GET_PRODUCTS_WITH_PRICE}`, body)
       .then((result) => {
         setProductsList(result.data.data); // new list
         setLoading(false);
-        // resetForm();
-        // setProductDisabled(true);
-        // setNumberDisabled(true);
-        // setProductCounter(null);
-        // setCurrentProduct(null);
         setConfirmBtn(true);
         message.success(t('محاسبه قیمت ها از SAP دریافت شد'));
       })
@@ -115,7 +110,6 @@ function CreateOrders() {
       });
   };
 
-  //تایید نهایی
   const handleConfirmOrder = (event) => {
     if (productsList.length === 0) {
       message.error(t('orderEmpty'));
@@ -163,8 +157,8 @@ function CreateOrders() {
     setFinalInvoice({
       count: 0,
       totalPrice: 0,
-      totalDiscount:0,
-      totalTax:0
+      totalDiscount: 0,
+      totalTax: 0,
     });
     // setProductsList([]);
     setCustomers([]);
@@ -289,24 +283,24 @@ function CreateOrders() {
   };
 
   const getFinalInvoice = () => {
-     let sumPrice = 0;
-     let sumDiscount = 0;
-     let sumTax = 0;
+    let sumPrice = 0;
+    let sumDiscount = 0;
+    let sumTax = 0;
     let sumCount = 0;
     if (productsList.length > 0) {
       productsList.forEach((item) => {
         // sumPrice += item.count * item.unitPrice.replace(/\,/g, '');
         sumPrice += item.price;
         sumCount += item.count;
-        sumTax+=item.tax;
-        sumDiscount+=item.discount;
+        sumTax += item.tax;
+        sumDiscount += item.discount;
       });
     }
     setFinalInvoice({
       count: sumCount,
       totalPrice: sumPrice,
-      totalDiscount:sumDiscount,
-      totalTax:sumTax,
+      totalDiscount: sumDiscount,
+      totalTax: sumTax,
     });
   };
   const getCustomerInfo = () => {
@@ -316,7 +310,13 @@ function CreateOrders() {
       setProductDisabled(false);
       setNumberDisabled(false);
       setCustomerName(JSONcustomer.label);
-      setCustomerId(JSONcustomer.key);
+      setCustomers([
+        {
+          value: JSONcustomer.value,
+          label: JSONcustomer.label,
+        },
+      ]);
+      setCustomerId(JSONcustomer.value);
       setNameRequired(false);
       setSelectCustomer(true);
       setTimeout(() => {
@@ -438,14 +438,6 @@ function CreateOrders() {
                         })}
                     </Select>
                   </Form.Item>
-
-                  {/* {!!searchCustomerValue && (
-                    <p style={{ color: '#EA2125' }}>
-                      {searchCustomerValue.length < 3
-                        ? 'طول نام وارد شده نباید کمتر از 2 باشد'
-                        : ''}
-                    </p>
-                  )} */}
                 </Col>
               </Row>
               <Row align='middle' gutter={24}>
@@ -498,13 +490,6 @@ function CreateOrders() {
                         })}
                     </Select>
                   </Form.Item>
-                  {/* {!!searchProductValue && (
-                    <p style={{ color: '#EA2125' }}>
-                      {searchProductValue.length < 3
-                        ? 'طول نام وارد شده نباید کمتر از 2 باشد'
-                        : ''}
-                    </p>
-                  )} */}
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={7}>
                   <Form.Item
@@ -564,7 +549,9 @@ function CreateOrders() {
                 <h5>
                   {t('تخفیف')}:{' '}
                   {finalInvoice.totalDiscount
-                    ? UtilsHelper.threeDigitSeparator(finalInvoice.totalDiscount)
+                    ? UtilsHelper.threeDigitSeparator(
+                        finalInvoice.totalDiscount
+                      )
                     : '0'}
                 </h5>
               </Row>
